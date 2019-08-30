@@ -1,16 +1,17 @@
 {
   "files": {
     "main.css": "/juggling-graph/static/css/main.2cce8147.chunk.css",
-    "main.js": "/juggling-graph/static/js/main.8582016a.chunk.js",
-    "main.js.map": "/juggling-graph/static/js/main.8582016a.chunk.js.map",
+    "main.js": "/juggling-graph/static/js/main.7eed0ae8.chunk.js",
+    "main.js.map": "/juggling-graph/static/js/main.7eed0ae8.chunk.js.map",
     "runtime~main.js": "/juggling-graph/static/js/runtime~main.cd8c9b25.js",
     "runtime~main.js.map": "/juggling-graph/static/js/runtime~main.cd8c9b25.js.map",
-    "static/js/2.5bed1d52.chunk.js": "/juggling-graph/static/js/2.5bed1d52.chunk.js",
-    "static/js/2.5bed1d52.chunk.js.map": "/juggling-graph/static/js/2.5bed1d52.chunk.js.map",
+    "static/css/2.31dafeb2.chunk.css": "/juggling-graph/static/css/2.31dafeb2.chunk.css",
+    "static/js/2.61f8f745.chunk.js": "/juggling-graph/static/js/2.61f8f745.chunk.js",
+    "static/js/2.61f8f745.chunk.js.map": "/juggling-graph/static/js/2.61f8f745.chunk.js.map",
     "index.html": "/juggling-graph/index.html",
-    "precache-manifest.04a6bb5b64271b7f584c93ec0b8a2794.js": "/juggling-graph/precache-manifest.04a6bb5b64271b7f584c93ec0b8a2794.js",
+    "precache-manifest.cf584a3fa959482166d9682d73f42a75.js": "/juggling-graph/precache-manifest.cf584a3fa959482166d9682d73f42a75.js",
     "service-worker.js": "/juggling-graph/service-worker.js",
-    "static/css/main.2cce8147.chunk.css.map": "/juggling-graph/static/css/main.2cce8147.chunk.css.map",
-    "static/media/logo.svg": "/juggling-graph/static/media/logo.5d5d9eef.svg"
+    "static/css/2.31dafeb2.chunk.css.map": "/juggling-graph/static/css/2.31dafeb2.chunk.css.map",
+    "static/css/main.2cce8147.chunk.css.map": "/juggling-graph/static/css/main.2cce8147.chunk.css.map"
   }
 }
