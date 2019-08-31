@@ -1,30 +1,50 @@
-import React from 'react';
-import './App.css';
-import { VictoryTheme, VictoryChart, VictoryLine } from 'victory';
+import React, { Component } from 'react';
+import DailyChart from '../Components/DailyChart';
+import DailyAverageChart from '../Components/DailyAverageChart';
 
-const data = [
+const dailyData = [
+  { x: 0, y: 0 },
   { x: 1, y: 1 },
   { x: 2, y: 3 },
   { x: 3, y: 5 },
-  { x: 4, y: 2 },
-  { x: 5, y: null },
-  { x: 6, y: null },
-  { x: 7, y: 6 },
-  { x: 8, y: 7 },
-  { x: 9, y: 8 },
-  { x: 10, y: 12 }
-]
+];
 
-function App() {
-  return (
-    <div className='mw6 center'>
-      <VictoryChart theme={VictoryTheme.material}>
-        <VictoryLine data={data} />
-      </VictoryChart>
-    </div>
+const dailyAverageData = [
+  { x: 0, y: 0 }
+];
 
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      dailyData: dailyData,
+      dailyAverageData: dailyAverageData
+    }
+  }
 
-  );
+  render() {
+    return (
+      <div>
+        <DailyChart dailyData={dailyData} updateDailyData={this.updateDailyData} />
+        <DailyAverageChart dailyAverageData={dailyAverageData} />
+      </div>
+
+    );
+  }
+
+  updateDailyData = (num) => {
+    dailyData.push({ x: dailyData.length, y: num });
+    this.setState({ dailyData });
+    this.updateAverageData(dailyData);
+  }
+
+  updateAverageData = (data) => {
+    const catchValues = dailyData.map(dat => dat.y);
+    const newAverage = catchValues.reduce((a, b) => a + b, 0) / dailyData.length;
+    dailyAverageData.push({ x: dailyAverageData.length, y: newAverage });
+    console.log(dailyAverageData);
+    this.setState({ dailyAverageData });
+  }
 }
 
 export default App;
