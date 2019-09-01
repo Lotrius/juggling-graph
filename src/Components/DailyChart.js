@@ -3,33 +3,36 @@ import { VictoryTheme, VictoryChart, VictoryLine, VictoryAxis, VictoryVoronoiCon
 
 import DataEntryField from './DataEntryField';
 
-const XPadding = 30;
-const YPadding = 40;
-
 class DailyChart extends Component {
 
 
     render() {
-        const { dailyData, updateDailyData } = this.props;
+        const { dailyData, updateDailyData, xPadding, yPadding } = this.props;
 
+        // Custom tick marks
         const xAxisTicks = dailyData.map(dat => dat.x);
         xAxisTicks.push(dailyData.length);
 
         return (
             <div className='mw6 center'>
+
+                {/* Chart */}
                 <VictoryChart
                     theme={VictoryTheme.material}
+
+                    // Component allows hovering over data for information
                     containerComponent={
                         <VictoryVoronoiContainer
                             labels={({ datum }) => `Attempt ${datum.x}: ${datum.y} catches`}
                             voronoiBlacklist={['points']}
                         />}
-                    style={{
-                        // parent: { width: '50%', height: 'auto' }
-                    }}
                 >
-                    <VictoryAxis style={{ axisLabel: { padding: XPadding }, axis: { padding: 100 } }} label='Attempt Number' tickValues={xAxisTicks} />
-                    <VictoryAxis style={{ axisLabel: { padding: YPadding } }} dependentAxis label='Catches' />
+
+                    {/* Axes and labels */}
+                    <VictoryAxis style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }} label='Attempt Number' tickValues={xAxisTicks} />
+                    <VictoryAxis crossAxis={false} style={{ axisLabel: { padding: yPadding } }} dependentAxis label='Catches' />
+
+                    {/* Line graph */}
                     <VictoryLine
                         data={dailyData}
                         animate={{
@@ -37,6 +40,8 @@ class DailyChart extends Component {
                             onLoad: { duration: 0 }
                         }}
                     />
+
+                    {/* Scatter plot */}
                     <VictoryScatter
                         name='points'
                         data={dailyData}
@@ -46,6 +51,10 @@ class DailyChart extends Component {
                         }}
                     />
                 </VictoryChart>
+
+                <br></br>
+
+                {/* Input field to input num catches */}
                 <DataEntryField updateDailyData={updateDailyData} />
             </div>
         );
