@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       dailyData: dailyData,
       dailyAverageData: dailyAverageData,
-      date: new Date()
+      date: new Date(),
     }
   }
 
@@ -63,7 +63,7 @@ class App extends Component {
 
     // Need to call changeGraph like this so that
     // it has access to the updated state
-    this.setState({ date: fullDate }, () => this.changeGraph()); 
+    this.setState({ date: fullDate }, () => this.changeGraph());
   }
 
   changeGraph = () => {
@@ -78,9 +78,8 @@ class App extends Component {
       .then(data => {
         // Change the dailyData to reflect the new date
         // TODO: Don't set up initial dailyData like this. Idea: update DB to include a 0 catch every day
-        dailyData = [{ x: 0, y: 0 }];
-        const dat = dailyData.concat(data.map((num, index) => ({ x: index + 1, y: num.catches })));
-        this.setState({ dailyData: dat });
+        dailyData = [{ x: 0, y: 0 }].concat(data.map((num, index) => ({ x: index + 1, y: num.catches })));
+        this.setState({ dailyData });
       });
   }
 
@@ -107,8 +106,8 @@ class App extends Component {
     fetch('http://localhost:3000/averagegraph')
       .then(response => response.json())
       .then((avgdata) => {
-        const dat = dailyAverageData.concat(avgdata.map((dat, index) => ({ x: dat.to_char, y: parseInt(dat.avg) })));
-        this.setState({ dailyAverageData: dat });
+        dailyAverageData = avgdata.map((dat, index) => ({ x: dat.to_char, y: parseInt(dat.avg) }));
+        this.setState({ dailyAverageData });
       })
   }
 }

@@ -19,7 +19,7 @@ class DailyChart extends Component {
                 {/* Chart */}
                 <VictoryChart
                     theme={VictoryTheme.material}
-                    domainPadding={{x: [0, 70]}} // Fix weird cutoff problem
+                    domainPadding={{x: [0, 70]}} // Fix weird cutoff problem sort of
 
                     // Component allows hovering over data for information
                     containerComponent={
