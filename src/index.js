@@ -4,6 +4,7 @@ import './index.css';
 import App from './Containers/App';
 import * as serviceWorker from './serviceWorker';
 import 'tachyons';
+import 'react-datepicker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
