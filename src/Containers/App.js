@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import DailyChart from '../Components/DailyChart';
 import DailyAverageChart from '../Components/DailyAverageChart';
-import DateSelect from '../Components/DateSelect';
+
+import Nav from '../Components/Nav';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 let dailyData = [];
 
@@ -32,16 +34,29 @@ class App extends Component {
     dailyAverageData = this.state.dailyAverageData;
 
     return (
-      <div>
-        {/* Daily catches graph */}
-        <DailyChart dailyData={dailyData} updateDailyData={this.updateDailyData} xPadding={xPadding} yPadding={yPadding} date={this.state.date} />
+      <Router>
+        <Nav></Nav>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            {/* Daily catches graph */}
+            <Route exact render={(props) => <DailyChart {...props} setDate={this.setDate} dailyData={dailyData} updateDailyData={this.updateDailyData} xPadding={xPadding} yPadding={yPadding} date={this.state.date} />} path='/' />
 
-        <DateSelect setDate={this.setDate} />
+            {/* Daily average catches graph */}
+            <Route exact render={(props) => <DailyAverageChart {...props} dailyAverageData={dailyAverageData} xPadding={xPadding} yPadding={yPadding} />} path='/average' />
+            
+            {/* Default */}
+            <Route component={Error} path='*' />
+          </Switch>
+        </Suspense>
 
-        {/* Daily average catches graph */}
-        <DailyAverageChart dailyAverageData={dailyAverageData} xPadding={xPadding} yPadding={yPadding} />
-      </div>
 
+
+
+
+
+
+
+      </Router>
     );
   }
 

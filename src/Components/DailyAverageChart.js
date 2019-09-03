@@ -12,7 +12,7 @@ class DailyAverageChart extends Component {
                 {/* Chart */}
                 <VictoryChart
                     theme={VictoryTheme.material}
-                    domainPadding={{x: [50, 90]}} // Fix overlapping/cutoff problem
+                    domainPadding={{ x: [50, 90] }} // Fix overlapping/cutoff problem
 
                     // Component allows hovering over data for information
                     containerComponent={
@@ -24,8 +24,23 @@ class DailyAverageChart extends Component {
                 >
 
                     {/* Axes and labels */}
-                    <VictoryAxis style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }} label='Day' fixLabelOverlap />
-                    <VictoryAxis style={{ axisLabel: { padding: yPadding } }} dependentAxis label='Average Number Catches' fixLabelOverlap />
+                    <VictoryAxis
+                        style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }}
+                        label='Day'
+                        fixLabelOverlap
+                        tickValues={
+                            dailyAverageData.length === 1 ? [0, 1] : []
+                        }
+                    />
+                    <VictoryAxis
+                        style={{ axisLabel: { padding: yPadding } }}
+                        dependentAxis
+                        label='Average Number Catches'
+                        fixLabelOverlap
+                        tickValues={
+                            dailyAverageData.length === 1 ? [0, 1] : []
+                        }
+                    />
 
                     {/* Line graph */}
                     <VictoryBar

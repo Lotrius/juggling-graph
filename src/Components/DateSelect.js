@@ -17,7 +17,10 @@ class DateSelect extends Component {
 
   render() {
     return (
-      <DatePicker selected={this.state.startDate} onChange={date => this.dateChange(date)} />
+      <div >
+        <DatePicker selected={this.state.startDate} onChange={date => this.dateChange(date)} />
+      </div>
+
     );
   }
 }
