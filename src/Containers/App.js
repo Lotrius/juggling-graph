@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 let dailyData = [];
 
 let dailyAverageData = [];
-
 class App extends Component {
   constructor() {
     super();
@@ -48,14 +47,6 @@ class App extends Component {
             <Route component={Error} path='*' />
           </Switch>
         </Suspense>
-
-
-
-
-
-
-
-
       </Router>
     );
   }
@@ -82,7 +73,7 @@ class App extends Component {
   }
 
   changeGraph = () => {
-    fetch('http://localhost:3000/dailygraph', {
+    fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
       method: 'post', // Can't pass in body if it's a GET
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -93,13 +84,13 @@ class App extends Component {
       .then(data => {
         // Change the dailyData to reflect the new date
         // TODO: Don't set up initial dailyData like this. Idea: update DB to include a 0 catch every day
-        dailyData = [{ x: 0, y: 0 }].concat(data.map((num, index) => ({ x: index + 1, y: num.catches })));
+        dailyData = [{ x: 0, y: 0 }].concat(data.map((num, index) => ({ x: index + 1, y: parseInt(num.catches) })));
         this.setState({ dailyData });
       });
   }
 
   updateDailyData = (catches) => {
-    fetch('http://localhost:3000/dailyupdate', {
+    fetch('https://obscure-river-59718.herokuapp.com/dailyupdate', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -118,10 +109,10 @@ class App extends Component {
   }
 
   updateAverageData = () => {
-    fetch('http://localhost:3000/averagegraph')
+    fetch('https://obscure-river-59718.herokuapp.com/averagegraph')
       .then(response => response.json())
       .then((avgdata) => {
-        dailyAverageData = avgdata.map((dat, index) => ({ x: dat.to_char, y: parseInt(dat.avg) }));
+        dailyAverageData = avgdata.map((dat, index) => ({ x: dat.to_char, y: parseFloat(dat.avg) }));
         this.setState({ dailyAverageData });
       })
   }

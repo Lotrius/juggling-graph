@@ -8,7 +8,6 @@ class DailyChart extends Component {
 
     render() {
         const { dailyData, updateDailyData, xPadding, yPadding, date, setDate } = this.props;
-
         return (
             <div className='flex justify-center'>
                 <div className='mr5' style={{ 'width': '600px' }}>
@@ -48,30 +47,33 @@ class DailyChart extends Component {
                         {/* Line graph */}
                         <VictoryLine
                             data={dailyData}
-                            animate={{
-                                duration: 1000,
-                                onLoad: { duration: 2000 }
-                            }}
+                        animate={{
+                            duration: 1000,
+                            onLoad: { duration: 2000 }
+                        }}
                         />
 
                         {/* Scatter plot */}
                         <VictoryScatter
                             name='points'
                             data={dailyData}
-                            animate={{
-                                duration: 1000,
-                                onLoad: { duration: 2000 }
-                            }}
+                        animate={{
+                            duration: 1000,
+                            onLoad: { duration: 2000 }
+                        }}
                         />
                     </VictoryChart>
                 </div>
 
                 <div className='mt5' style={{ 'width': '300px' }}>
                     <div className='center'>
+
+                        {/* Enter number field */}
                         <div className='mb3 overflow-auto'  >
                             <DataEntryField updateDailyData={updateDailyData} />
                         </div>
 
+                        {/* Select date */}
                         <div>
                             <DateSelect setDate={setDate} />
                         </div>

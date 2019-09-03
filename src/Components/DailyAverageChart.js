@@ -5,7 +5,7 @@ class DailyAverageChart extends Component {
     render() {
         const { dailyAverageData, xPadding, yPadding } = this.props;
 
-        console.log(dailyAverageData);
+        console.log(dailyAverageData.map(val => +parseFloat(val.y).toFixed(2)));
 
         return (
             <div className='mw6 center'>
@@ -17,7 +17,7 @@ class DailyAverageChart extends Component {
                     // Component allows hovering over data for information
                     containerComponent={
                         <VictoryVoronoiContainer
-                            labels={({ datum }) => `${datum.x} average: ${datum.y} catches`}
+                            labels={({ datum }) => `${datum.x} average: ${+datum.y.toFixed(2)} catches`}
                             voronoiBlacklist={['points']}
                         />
                     }
@@ -29,7 +29,7 @@ class DailyAverageChart extends Component {
                         label='Day'
                         fixLabelOverlap
                         tickValues={
-                            dailyAverageData.length === 1 ? [0, 1] : []
+                            dailyAverageData.length === 1 ? [0, 1] :  []
                         }
                     />
                     <VictoryAxis
