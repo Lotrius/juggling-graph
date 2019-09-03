@@ -33,7 +33,7 @@ class App extends Component {
     dailyAverageData = this.state.dailyAverageData;
 
     return (
-      <Router>
+      <Router basename='/juggling-graph'>
         <Nav></Nav>
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
