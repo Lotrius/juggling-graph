@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4941337f30392e912234ddea6fc0c3e8",
+    "revision": "b3cc4fd75fe611b6d98445eacd5884c2",
     "url": "/juggling-graph/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/css/2.d56ffd16.chunk.css"
   },
   {
-    "revision": "183ef20ccef24a225dd9",
+    "revision": "73050c0325ad3e542c54",
     "url": "/juggling-graph/static/css/main.e92517c3.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/js/2.700e9c49.chunk.js"
   },
   {
-    "revision": "183ef20ccef24a225dd9",
-    "url": "/juggling-graph/static/js/main.696f09a7.chunk.js"
+    "revision": "73050c0325ad3e542c54",
+    "url": "/juggling-graph/static/js/main.c70e372b.chunk.js"
   },
   {
     "revision": "8e3848a31e4aa50f5b74",
