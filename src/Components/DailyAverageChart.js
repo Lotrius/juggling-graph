@@ -29,7 +29,7 @@ class DailyAverageChart extends Component {
                         label='Day'
                         fixLabelOverlap
                         tickValues={
-                            dailyAverageData.length === 1 ? [0, 1] :  []
+                            dailyAverageData.length === 0 ? [0, 1] :  []
                         }
                     />
                     <VictoryAxis
@@ -38,7 +38,7 @@ class DailyAverageChart extends Component {
                         label='Average Number Catches'
                         fixLabelOverlap
                         tickValues={
-                            dailyAverageData.length === 1 ? [0, 1] : []
+                            dailyAverageData.length === 0 ? [0, 1] : []
                         }
                     />
 
