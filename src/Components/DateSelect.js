@@ -10,6 +10,7 @@ class DateSelect extends Component {
     }
   }
 
+  // Change the date on the calendar
   dateChange = (date) => {
     this.setState({ startDate: date }); // Change highlighted date on calendar
     this.props.setDate(date); // Call setDate from props

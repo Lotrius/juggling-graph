@@ -19,8 +19,6 @@ const Nav = () => {
                 </ul>
             </div>
         </nav >
-
-
     );
 }
 

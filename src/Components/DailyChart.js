@@ -4,8 +4,6 @@ import DateSelect from '../Components/DateSelect';
 import DataEntryField from './DataEntryField';
 
 class DailyChart extends Component {
-
-
     render() {
         const { dailyData, updateDailyData, xPadding, yPadding, date, setDate } = this.props;
         return (
@@ -30,7 +28,7 @@ class DailyChart extends Component {
                         {/* Axes and labels */}
                         <VictoryAxis
                             style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }}
-                            label='Attempt Number'
+                            label='Attempt'
                             tickValues={
                                 dailyData.length === 1 ? [0, 1] : []
                             }
@@ -64,7 +62,8 @@ class DailyChart extends Component {
                         />
                     </VictoryChart>
                 </div>
-
+                
+                {/* Input field and date selector */}
                 <div className='mt5' style={{ 'width': '300px' }}>
                     <div className='center'>
 
@@ -79,13 +78,10 @@ class DailyChart extends Component {
                         </div>
                     </div>
 
-
                 </div>
             </div>
         );
     }
-
-
 }
 
 export default DailyChart;

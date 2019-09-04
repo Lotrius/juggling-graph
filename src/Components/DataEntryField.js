@@ -30,6 +30,7 @@ class DataEntryField extends Component {
         );
     }
 
+    // When data is entered into the input field
     submitData = (event) => {
         event.preventDefault(); // Prevent page from refreshing when submitted
 

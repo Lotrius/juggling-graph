@@ -18,9 +18,10 @@ class App extends Component {
     }
   }
 
+  // Update state and get data when app opened
   componentDidMount() {
     this.setDate(this.state.date);
-    this.updateAverageData();
+    this.getAverageData();
   }
 
   render() {
@@ -42,7 +43,7 @@ class App extends Component {
 
             {/* Daily average catches graph */}
             <Route exact render={(props) => <DailyAverageChart {...props} dailyAverageData={dailyAverageData} xPadding={xPadding} yPadding={yPadding} />} path='/average' />
-            
+
             {/* Default */}
             <Route component={Error} path='*' />
           </Switch>
@@ -51,6 +52,7 @@ class App extends Component {
     );
   }
 
+  // Change date to date selected on calendar
   setDate = (date) => {
     // Reformat the date to make it easier to pass into DB/title
     const year = date.getFullYear().toString();
@@ -72,6 +74,7 @@ class App extends Component {
     this.setState({ date: fullDate }, () => this.changeGraph());
   }
 
+  // Update the graph
   changeGraph = () => {
     fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
       method: 'post', // Can't pass in body if it's a GET
@@ -89,6 +92,7 @@ class App extends Component {
       });
   }
 
+  // Update DB/graph when data is input
   updateDailyData = (catches) => {
     fetch('https://obscure-river-59718.herokuapp.com/dailyupdate', {
       method: 'post',
@@ -105,10 +109,11 @@ class App extends Component {
         dailyData.push({ x: dailyData.length, y: res.catches })
         this.setState({ dailyData })
       })
-      .then(() => this.updateAverageData());
+      .then(() => this.getAverageData());
   }
 
-  updateAverageData = () => {
+  // Get average data graph
+  getAverageData = () => {
     fetch('https://obscure-river-59718.herokuapp.com/averagegraph')
       .then(response => response.json())
       .then((avgdata) => {

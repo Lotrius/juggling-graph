@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { VictoryTheme, VictoryChart, VictoryBar, VictoryAxis, VictoryVoronoiContainer } from 'victory';
+import { VictoryTheme, VictoryChart, VictoryBar, VictoryAxis, VictoryVoronoiContainer, VictoryLabel } from 'victory';
 
 class DailyAverageChart extends Component {
     render() {
         const { dailyAverageData, xPadding, yPadding } = this.props;
-
-        console.log(dailyAverageData.map(val => +parseFloat(val.y).toFixed(2)));
 
         return (
             <div className='mw6 center'>
@@ -23,13 +21,15 @@ class DailyAverageChart extends Component {
                     }
                 >
 
+                    <VictoryLabel text={`Average catches`} x={180} y={30} textAnchor="middle" />
+
                     {/* Axes and labels */}
                     <VictoryAxis
                         style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }}
                         label='Day'
                         fixLabelOverlap
                         tickValues={
-                            dailyAverageData.length === 0 ? [0, 1] :  []
+                            dailyAverageData.length === 0 ? [0, 1] : []
                         }
                     />
                     <VictoryAxis
@@ -54,7 +54,6 @@ class DailyAverageChart extends Component {
             </div>
         );
     }
-
 }
 
 export default DailyAverageChart;
