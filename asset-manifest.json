@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/juggling-graph/static/css/main.e92517c3.chunk.css",
-    "main.js": "/juggling-graph/static/js/main.c70e372b.chunk.js",
-    "main.js.map": "/juggling-graph/static/js/main.c70e372b.chunk.js.map",
+    "main.js": "/juggling-graph/static/js/main.89341b6b.chunk.js",
+    "main.js.map": "/juggling-graph/static/js/main.89341b6b.chunk.js.map",
     "runtime~main.js": "/juggling-graph/static/js/runtime~main.cd8c9b25.js",
     "runtime~main.js.map": "/juggling-graph/static/js/runtime~main.cd8c9b25.js.map",
     "static/css/2.d56ffd16.chunk.css": "/juggling-graph/static/css/2.d56ffd16.chunk.css",
     "static/js/2.700e9c49.chunk.js": "/juggling-graph/static/js/2.700e9c49.chunk.js",
     "static/js/2.700e9c49.chunk.js.map": "/juggling-graph/static/js/2.700e9c49.chunk.js.map",
     "index.html": "/juggling-graph/index.html",
-    "precache-manifest.8683d0100913a14dd34b6a445ce9e82c.js": "/juggling-graph/precache-manifest.8683d0100913a14dd34b6a445ce9e82c.js",
+    "precache-manifest.487c42c5625c1edaac43445bf9f00bd4.js": "/juggling-graph/precache-manifest.487c42c5625c1edaac43445bf9f00bd4.js",
     "service-worker.js": "/juggling-graph/service-worker.js",
     "static/css/2.d56ffd16.chunk.css.map": "/juggling-graph/static/css/2.d56ffd16.chunk.css.map",
     "static/css/main.e92517c3.chunk.css.map": "/juggling-graph/static/css/main.e92517c3.chunk.css.map"
