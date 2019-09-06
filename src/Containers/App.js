@@ -21,7 +21,7 @@ class App extends Component {
   // Update state and get data when app opened
   componentDidMount() {
     this.setDate(this.state.date);
-    this.getAverageData();
+    this.getAverageData(this.state.date);
   }
 
   render() {
@@ -113,8 +113,25 @@ class App extends Component {
   }
 
   // Get average data graph
-  getAverageData = () => {
-    fetch('https://obscure-river-59718.herokuapp.com/averagegraph')
+  getAverageData = (date) => {
+    const year = date.getFullYear().toString();
+    let month = (date.getMonth() + 1).toString();
+
+    if (month.length === 1) {
+      month = '0' + month;
+    }
+
+    const selectedMonth = year + '-' + month;
+
+
+
+    fetch('https://obscure-river-59718.herokuapp.com/averagegraph', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        selectedMonth: selectedMonth
+      })
+    })
       .then(response => response.json())
       .then((avgdata) => {
         dailyAverageData = avgdata.map((dat, index) => ({ x: dat.to_char, y: parseFloat(dat.avg) }));

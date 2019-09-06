@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { VictoryTheme, VictoryChart, VictoryBar, VictoryAxis, VictoryVoronoiContainer, VictoryLabel } from 'victory';
+// import DateSelectAvg from './DateSelectAvg';
 
 class DailyAverageChart extends Component {
     render() {
         const { dailyAverageData, xPadding, yPadding } = this.props;
+
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'] // Array of month names
+        
+        let dailyAverageDataMonth = ''; // Declare month name var
+
+        // If dailyAverageData has data in it, get the month name
+        if(dailyAverageData.length > 0) {
+            dailyAverageDataMonth = months[parseInt(dailyAverageData[0]['x'].substring(5,7)) - 1];
+        }
 
         return (
             <div className='mw6 center'>
@@ -20,8 +30,7 @@ class DailyAverageChart extends Component {
                         />
                     }
                 >
-
-                    <VictoryLabel text={`Average catches`} x={180} y={30} textAnchor="middle" />
+                    <VictoryLabel text={dailyAverageData.length > 0 ? `Average catches ${dailyAverageDataMonth}` : ''} x={180} y={30} textAnchor="middle" />
 
                     {/* Axes and labels */}
                     <VictoryAxis
@@ -29,7 +38,7 @@ class DailyAverageChart extends Component {
                         label='Day'
                         fixLabelOverlap
                         tickValues={
-                            dailyAverageData.length === 0 ? [0, 1] : []
+                            dailyAverageData.length === 0 ? [0, 1] : dailyAverageData.map((data) => data.y)
                         }
                     />
                     <VictoryAxis
@@ -51,6 +60,8 @@ class DailyAverageChart extends Component {
                         }}
                     />
                 </VictoryChart>
+
+                {/* <DateSelectAvg></DateSelectAvg> */}
             </div>
         );
     }
