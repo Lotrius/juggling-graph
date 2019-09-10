@@ -1,34 +1,25 @@
-// import React, { Component } from 'react';
-// import DatePicker from 'react-datepicker';
-// import "react-datepicker/dist/react-datepicker.css";
+import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
-// class DateSelectAvg extends Component {
-//     constructor() {
-//         super();
-//         this.state = {
-//             startDate: new Date()
-//         }
-//     }
+var d = new Date();
+d.setMonth(d.getMonth() - 1);
 
-//     // Change the date on the calendar
-//     dateChange = (date) => {
-//         this.setState({ startDate: date }); // Change highlighted date on calendar
-//         this.props.setDate(date); // Call setDate from props
-//     }
+class DateSelectAvg extends Component {
+    render() {
+        const { averageDate } = this.props;
+        return (
+            <div >
+                <DatePicker
+                    selected={averageDate}
+                    onChange={date => this.props.getAverageData(date)}
+                    dateFormat="MM/yyyy"
+                    showMonthYearPicker
+                />
+            </div>
 
-//     render() {
-//         return (
-//             <div >
-//                 <DatePicker
-//                     selected={startDate}
-//                     onChange={date => setStartDate(date)}
-//                     dateFormat="MM/YYYY"
-//                     showMonthYearPicker
-//                 />
-//             </div>
+        );
+    }
+}
 
-//         );
-//     }
-// }
-
-// export default DateSelectAvg;
+export default DateSelectAvg;

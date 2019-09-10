@@ -15,6 +15,7 @@ class App extends Component {
       dailyData: dailyData,
       dailyAverageData: dailyAverageData,
       date: new Date(),
+      averageDate: new Date()
     }
   }
 
@@ -39,10 +40,10 @@ class App extends Component {
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             {/* Daily catches graph */}
-            <Route exact render={(props) => <DailyChart {...props} setDate={this.setDate} dailyData={dailyData} updateDailyData={this.updateDailyData} xPadding={xPadding} yPadding={yPadding} date={this.state.date} />} path='/' />
+            <Route exact render={() => <DailyChart setDate={this.setDate} dailyData={dailyData} updateDailyData={this.updateDailyData} xPadding={xPadding} yPadding={yPadding} date={this.state.date} />} path='/' />
 
             {/* Daily average catches graph */}
-            <Route exact render={(props) => <DailyAverageChart {...props} dailyAverageData={dailyAverageData} xPadding={xPadding} yPadding={yPadding} />} path='/average' />
+            <Route exact render={() => <DailyAverageChart getAverageData={this.getAverageData} dailyAverageData={dailyAverageData} xPadding={xPadding} yPadding={yPadding} averageDate={this.state.averageDate} />} path='/average' />
 
             {/* Default */}
             <Route component={Error} path='*' />
@@ -52,8 +53,21 @@ class App extends Component {
     );
   }
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   // Change date to date selected on calendar
   setDate = (date) => {
+
+    // Need to call changeGraph like this so that
+    // it has access to the updated state
+    this.setState({ date }, () => this.changeGraph(date));
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Get graph data for a certain day
+  changeGraph = (date) => {
+
     // Reformat the date to make it easier to pass into DB/title
     const year = date.getFullYear().toString();
     let month = (date.getMonth() + 1).toString();
@@ -69,18 +83,11 @@ class App extends Component {
 
     const fullDate = `${year}-${month}-${day}`;
 
-    // Need to call changeGraph like this so that
-    // it has access to the updated state
-    this.setState({ date: fullDate }, () => this.changeGraph());
-  }
-
-  // Update the graph
-  changeGraph = () => {
     fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
       method: 'post', // Can't pass in body if it's a GET
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        newDate: this.state.date // Pass in the new date
+        newDate: fullDate // Pass in the new date
       })
     })
       .then(response => response.json())
@@ -91,6 +98,8 @@ class App extends Component {
         this.setState({ dailyData });
       });
   }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Update DB/graph when data is input
   updateDailyData = (catches) => {
@@ -103,14 +112,20 @@ class App extends Component {
     })
       .then(response => response.json())
       .then((res) => {
+        this.setState({ date: new Date() }, () => this.changeGraph(this.state.date));
+        return res;
+      })
+      .then((res) => {
         // Update the state
         // I COULD call changeGraph but that would just take too much time tbh
         // TODO: Is there a better way to do this? Combine this function and changeGraph somehow?
         dailyData.push({ x: dailyData.length, y: res.catches })
         this.setState({ dailyData })
       })
-      .then(() => this.getAverageData());
+      .then(() => this.getAverageData(this.state.date));
   }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Get average data graph
   getAverageData = (date) => {
@@ -123,8 +138,6 @@ class App extends Component {
 
     const selectedMonth = year + '-' + month;
 
-
-
     fetch('https://obscure-river-59718.herokuapp.com/averagegraph', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -134,8 +147,8 @@ class App extends Component {
     })
       .then(response => response.json())
       .then((avgdata) => {
-        dailyAverageData = avgdata.map((dat, index) => ({ x: dat.to_char, y: parseFloat(dat.avg) }));
-        this.setState({ dailyAverageData });
+        dailyAverageData = avgdata.map((dat) => ({ x: dat.to_char.substring(9, 10), y: parseFloat(dat.avg) }));
+        this.setState({ dailyAverageData, averageDate: date });
       })
   }
 }

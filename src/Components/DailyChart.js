@@ -21,7 +21,7 @@ class DailyChart extends Component {
                 deletedNoiseArray.push(acc / chunk);
                 acc = 0;
             }
-            
+
             // Accumulate sum
             acc += catchPoints[i];
 
@@ -35,6 +35,23 @@ class DailyChart extends Component {
         return deletedNoiseArray;
     }
 
+    stringifyDate = (date) => {
+        // Reformat the date to make it easier to pass into DB/title
+        const year = date.getFullYear().toString();
+        let month = (date.getMonth() + 1).toString();
+        let day = date.getDate().toString();
+
+        if (month.length === 1) {
+            month = '0' + month;
+        }
+
+        if (day.length === 1) {
+            day = '0' + day;
+        }
+
+        return `${year}-${month}-${day}`;
+    }
+
     render() {
         const { dailyData, updateDailyData, xPadding, yPadding, date, setDate } = this.props;
 
@@ -44,6 +61,8 @@ class DailyChart extends Component {
         if (dailyData.length > 1) {
             deletedNoiseArray = this.removeNoise(dailyData, chunk).map((val, ind) => ({ x: (ind) * 5, y: val }));
         }
+
+        const currentDate = this.stringifyDate(date);
 
         return (
             <div className='flex justify-center'>
@@ -62,7 +81,9 @@ class DailyChart extends Component {
 
                         style={{ parent: { maxWidth: '200%' } }}
                     >
-                        <VictoryLabel text={`Catches ${date}`} x={180} y={30} textAnchor="middle" />
+
+                        {/* Title */}
+                        <VictoryLabel text={`Catches ${currentDate}`} x={180} y={30} textAnchor="middle" />
 
                         {/* Axes and labels */}
                         <VictoryAxis
@@ -126,7 +147,7 @@ class DailyChart extends Component {
 
                         {/* Select date */}
                         <div>
-                            <DateSelect setDate={setDate} />
+                            <DateSelect setDate={setDate} date={date} />
                         </div>
                     </div>
 
