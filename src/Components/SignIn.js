@@ -89,7 +89,7 @@ class SignIn extends React.Component {
         event.preventDefault(); // Stop page refresh when enter is pressed
 
         // Call to backend
-        fetch('https://obscure-river-59718.herokuapp.com/signin', {
+        fetch('http://localhost:3000/signin', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

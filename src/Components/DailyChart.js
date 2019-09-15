@@ -5,21 +5,24 @@ import DataEntryField from './DataEntryField';
 import { withRouter } from 'react-router-dom';
 
 let dailyData = [];
+sessionStorage.setItem('date', new Date());
 
 class DailyChart extends Component {
     constructor() {
         super();
         this.state = {
             dailyData: dailyData,
-            date: new Date(),
         }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Update state and get data when app opened
+    // Update storage and get data when app opened
     componentDidMount() {
-        this.setDate(this.state.date);
+        if (sessionStorage.getItem('date')) {
+            this.setDate(new Date(sessionStorage.getItem('date')));
+        } 
+        
         this.props.changeCurrentPath(this.props.location.pathname);
     }
 
@@ -37,7 +40,9 @@ class DailyChart extends Component {
             deletedNoiseArray = this.removeNoise(dailyData, chunk).map((val, ind) => ({ x: (ind) * 5, y: val }));
         }
 
-        const currentDate = this.stringifyDate(this.state.date); // Current presented date
+        const currentDate = new Date(sessionStorage.getItem('date')); // Current presented date
+
+        const titleDate = this.stringifyDate(currentDate); // Date for title
 
         dailyData = this.state.dailyData; // Current data
 
@@ -47,7 +52,7 @@ class DailyChart extends Component {
                     <VictoryChart
                         className='mt6'
                         theme={VictoryTheme.material}
-                        domainPadding={{ x: [0, 70] }} // Fix weird cutoff problem sort of
+                        domainPadding={{ x: [0, 30], y: [0, 30] }} // Fix weird cutoff problem sort of
 
                         // Component allows hovering over data for information
                         containerComponent={
@@ -60,28 +65,22 @@ class DailyChart extends Component {
                     >
 
                         {/* Title */}
-                        <VictoryLabel text={`Catches ${currentDate}`} x={180} y={30} textAnchor="middle" />
+                        <VictoryLabel text={`Catches ${titleDate}`} x={180} y={30} textAnchor="middle" />
 
                         {/* Axes and labels */}
                         <VictoryAxis
                             style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }}
                             label='Attempt'
-                            tickValues={
-                                dailyData.length === 1 ? [0, 1] : []
-                            }
                         />
                         <VictoryAxis
                             style={{ axisLabel: { padding: yPadding } }}
                             dependentAxis
                             label='Catches'
-                            tickValues={
-                                dailyData.length === 1 ? [0, 1] : []
-                            }
                         />
 
                         {/* Line graph */}
                         <VictoryLine
-                            data={dailyData}
+                            data={dailyData.length === 1 ? [] : dailyData}
                             animate={{
                                 duration: 1000,
                                 onLoad: { duration: 2000 }
@@ -104,7 +103,7 @@ class DailyChart extends Component {
                         {/* Scatter plot */}
                         <VictoryScatter
                             name='points'
-                            data={dailyData}
+                            data={dailyData.length === 1 ? [] : dailyData}
                             animate={{
                                 duration: 1000,
                                 onLoad: { duration: 2000 }
@@ -124,7 +123,7 @@ class DailyChart extends Component {
 
                         {/* Date picker */}
                         <div>
-                            <DateSelect setDate={this.setDate} date={this.state.date} />
+                            <DateSelect setDate={this.setDate} date={currentDate} />
                         </div>
                     </div>
 
@@ -189,15 +188,15 @@ class DailyChart extends Component {
 
     // Change date to date selected on calendar
     setDate = (date) => {
-        // Need to call changeGraph like this so that
-        // it has access to the updated state
-        this.setState({ date }, () => this.changeGraph(date));
+        sessionStorage.setItem('date', date);
+        
+        this.getDailyData(new Date(sessionStorage.getItem('date')));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Get graph data for a certain day
-    changeGraph = (date) => {
+    getDailyData = (date) => {
         // Reformat the date to make it easier to pass into DB/title
         const year = date.getFullYear().toString();
         let month = (date.getMonth() + 1).toString();
@@ -243,13 +242,13 @@ class DailyChart extends Component {
         })
             .then(response => response.json())
             .then((res) => {
-                this.setState({ date: new Date() }, () => this.changeGraph(this.state.date));
+                this.setState({ date: new Date() }, () => this.getDailyData(this.state.date));
                 return res;
             })
             .then((res) => {
                 // Update the state
-                // I COULD call changeGraph but that would just take too much time tbh
-                // TODO: Is there a better way to do this? Combine this function and changeGraph somehow?
+                // I COULD call getDailyData but that would just take too much time tbh
+                // TODO: Is there a better way to do this? Combine this function and getDailyData somehow?
                 dailyData.push({ x: dailyData.length, y: res.catches });
                 this.setState({ dailyData });
             });

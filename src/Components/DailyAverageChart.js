@@ -5,13 +5,25 @@ import { withRouter } from 'react-router-dom';
 
 let dailyAverageData = [];
 
+sessionStorage.setItem('avgdate', new Date());
+
 class DailyAverageChart extends Component {
     constructor() {
         super();
         this.state = {
             dailyAverageData: dailyAverageData,
-            averageDate: new Date()
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Update storage and get data when app opened
+    componentDidMount() {
+        if (sessionStorage.getItem('avgdate')) {
+            this.setDate(new Date(sessionStorage.getItem('avgdate')));
+        }
+
+        this.props.changeCurrentPath(this.props.location.pathname);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,14 +33,16 @@ class DailyAverageChart extends Component {
 
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] // Array of month names
 
-        let dailyAverageDataMonth = months[(this.state.averageDate.getMonth())]; // Declare month name var
+        var currentDate = new Date(sessionStorage.getItem('avgdate'));
+
+        let dailyAverageDataMonth = months[(currentDate.getMonth())]; // Declare month name var
 
         return (
             <div className='mw6 center'>
                 {/* Chart */}
                 <VictoryChart
                     theme={VictoryTheme.material}
-                    domainPadding={{ x: [50, 90] }} // Fix overlapping/cutoff problem
+                    domainPadding={{ x: [50, 30], y: [50, 30] }} // Fix overlapping/cutoff problem
 
                     // Component allows hovering over data for information
                     containerComponent={
@@ -47,18 +61,12 @@ class DailyAverageChart extends Component {
                         style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }}
                         label='Day'
                         fixLabelOverlap
-                        tickValues={
-                            dailyAverageData.length === 0 ? [0, 1] : dailyAverageData.map((data) => data.x)
-                        }
                     />
                     <VictoryAxis
                         style={{ axisLabel: { padding: yPadding } }}
                         dependentAxis
                         label='Average Catches'
                         fixLabelOverlap
-                        tickValues={
-                            dailyAverageData.length === 0 ? [0, 1] : []
-                        }
                     />
 
                     {/* Bar graph */}
@@ -72,9 +80,18 @@ class DailyAverageChart extends Component {
                 </VictoryChart>
 
                 {/* Date picker */}
-                <DateSelectAvg getAverageData={this.getAverageData} averageDate={this.state.averageDate} />
+                <DateSelectAvg setDate={this.setDate} averageDate={currentDate} />
             </div>
         );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Change date to date selected on calendar
+    setDate = (date) => {
+        sessionStorage.setItem('avgdate', date);
+        
+        this.getAverageData(new Date(sessionStorage.getItem('avgdate')));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,16 +119,8 @@ class DailyAverageChart extends Component {
             .then(response => response.json())
             .then((avgdata) => {
                 dailyAverageData = avgdata.map((dat) => ({ x: dat.to_char.substring(8, 10), y: parseFloat(dat.avg) }));
-                this.setState({ dailyAverageData, averageDate: date });
+                this.setState({ dailyAverageData });
             })
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Update state and get data when app opened
-    componentDidMount() {
-        this.getAverageData(this.state.averageDate);
-        this.props.changeCurrentPath(this.props.location.pathname);
     }
 }
 

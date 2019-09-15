@@ -79,6 +79,8 @@ class App extends Component {
       // If a guest, set guest status to false
       if (localStorage.getItem('guest') === "true") {
         localStorage.setItem('guest', false);
+        sessionStorage.removeItem('avgdate');
+        sessionStorage.removeItem('date');
       }
 
       // Change path to '/' so when signed in again,
