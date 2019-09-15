@@ -9,13 +9,6 @@ const DailyAverageChart = loadable(() => import('../Components/DailyAverageChart
 const Nav = loadable(() => import('../Components/Nav'));
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loggedIn: false,
-    }
-  }
-
   render() {
     // Padding for the graphs cause otherwise the labels overlap
     // the numbers and it looks like hot garbage
@@ -31,9 +24,7 @@ class App extends Component {
 
           <Redirect to='/signin' />
 
-          <Route exact render={() =>
-            <SignIn changeLoginStatus={this.changeLoginStatus} />} path='/signin'
-          />
+          <Route exact render={() => <SignIn changeLoginStatus={this.changeLoginStatus} />} path='/signin' />
 
         </Router>
       );
@@ -44,7 +35,7 @@ class App extends Component {
       return (
         <Router basename='/juggling-graph'>
 
-          <Redirect to={path ? path : '/'}></Redirect>
+          <Redirect to={path ? path : '/'} />
 
           <Nav changeLoginStatus={this.changeLoginStatus} />
 
@@ -65,14 +56,12 @@ class App extends Component {
   // Flip login status
   changeLoginStatus = () => {
     if (Cookie.get("signedin") === "false" || !Cookie.get("signedin")) {
-      Cookie.set("signedin", true, { expires: 1 });
+      Cookie.set("signedin", true);
     } else if (Cookie.get("signedin") === "true") {
       Cookie.set("signedin", false);
     }
 
-    this.setState(prevState => ({
-      loggedIn: !prevState.loggedIn
-    }))
+    this.forceUpdate(); // Force the app to rerender
   }
 
   // Update current path
