@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "aca6ccca4be956fd41d0f136c5a320e0",
+    "revision": "0be3b36fc6dd06929a199d2a4fddd900",
     "url": "/juggling-graph/index.html"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/css/3.31dafeb2.chunk.css"
   },
   {
-    "revision": "2a37afc27ae23b21f8fe",
+    "revision": "9b17250d0d2446902036",
     "url": "/juggling-graph/static/css/main.e92517c3.chunk.css"
   },
   {
@@ -28,31 +28,31 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/js/4.6ab891aa.chunk.js"
   },
   {
-    "revision": "4dcb4e2d33a50d6ae8d8",
-    "url": "/juggling-graph/static/js/5.7860330f.chunk.js"
+    "revision": "9a71537160fab4df4dbf",
+    "url": "/juggling-graph/static/js/5.77af559f.chunk.js"
   },
   {
-    "revision": "4f31cc37c5669b96d5aa",
-    "url": "/juggling-graph/static/js/6.2198babe.chunk.js"
+    "revision": "d8abd932fab2e205c8d4",
+    "url": "/juggling-graph/static/js/6.d769c988.chunk.js"
   },
   {
     "revision": "f79a198f2a6912a7611c",
     "url": "/juggling-graph/static/js/7.e95daea6.chunk.js"
   },
   {
-    "revision": "2b312e88c386981c2493",
-    "url": "/juggling-graph/static/js/8.c49177da.chunk.js"
+    "revision": "d3122118f30401419140",
+    "url": "/juggling-graph/static/js/8.f5f25cd6.chunk.js"
   },
   {
     "revision": "8dc057b552e133427502",
     "url": "/juggling-graph/static/js/9.76875a02.chunk.js"
   },
   {
-    "revision": "2a37afc27ae23b21f8fe",
-    "url": "/juggling-graph/static/js/main.ed9b6716.chunk.js"
+    "revision": "9b17250d0d2446902036",
+    "url": "/juggling-graph/static/js/main.93a6bf89.chunk.js"
   },
   {
-    "revision": "65b3c92d23f299df6de5",
-    "url": "/juggling-graph/static/js/runtime~main.071b5235.js"
+    "revision": "ccc5e8408a163f743c5c",
+    "url": "/juggling-graph/static/js/runtime~main.ade356dc.js"
   }
 ]);
