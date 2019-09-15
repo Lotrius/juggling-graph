@@ -1,28 +1,19 @@
-import React, { Component, Suspense } from 'react';
-import DailyChart from '../Components/DailyChart';
-import DailyAverageChart from '../Components/DailyAverageChart';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import Cookie from 'js-cookie';
+import loadable from '@loadable/component';
 
-import Nav from '../Components/Nav';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+const SignIn = loadable(() => import('../Components/SignIn'));
+const DailyChart = loadable(() => import('../Components/DailyChart'));
+const DailyAverageChart = loadable(() => import('../Components/DailyAverageChart'));
+const Nav = loadable(() => import('../Components/Nav'));
 
-let dailyData = [];
-
-let dailyAverageData = [];
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      dailyData: dailyData,
-      dailyAverageData: dailyAverageData,
-      date: new Date(),
-      averageDate: new Date()
+      loggedIn: false,
     }
-  }
-
-  // Update state and get data when app opened
-  componentDidMount() {
-    this.setDate(this.state.date);
-    this.getAverageData(this.state.date);
   }
 
   render() {
@@ -31,125 +22,62 @@ class App extends Component {
     const xPadding = 30;
     const yPadding = 40;
 
-    dailyData = this.state.dailyData;
-    dailyAverageData = this.state.dailyAverageData;
+    let path = localStorage.getItem('path'); // Current path
 
-    return (
-      <Router basename='/juggling-graph'>
-        <Nav></Nav>
-        <Suspense fallback={<div>Loading...</div>}>
+    // If there's a cookie or if signed out, go to login page
+    if (Cookie.get("signedin") === "false" || !Cookie.get("signedin")) {
+      return (
+        <Router basename='/juggling-graph'>
+
+          <Redirect to='/signin' />
+
+          <Route exact render={() =>
+            <SignIn changeLoginStatus={this.changeLoginStatus} />} path='/signin'
+          />
+
+        </Router>
+      );
+    }
+
+    // Else go to main page
+    else if (Cookie.get("signedin") === "true") {
+      return (
+        <Router basename='/juggling-graph'>
+
+          <Redirect to={path ? path : '/'}></Redirect>
+
+          <Nav changeLoginStatus={this.changeLoginStatus} />
+
           <Switch>
             {/* Daily catches graph */}
-            <Route exact render={() => <DailyChart setDate={this.setDate} dailyData={dailyData} updateDailyData={this.updateDailyData} xPadding={xPadding} yPadding={yPadding} date={this.state.date} />} path='/' />
+            <Route exact render={() => <DailyChart xPadding={xPadding} yPadding={yPadding} changeCurrentPath={this.changeCurrentPath} />} path='/' />
 
             {/* Daily average catches graph */}
-            <Route exact render={() => <DailyAverageChart getAverageData={this.getAverageData} dailyAverageData={dailyAverageData} xPadding={xPadding} yPadding={yPadding} averageDate={this.state.averageDate} />} path='/average' />
+            <Route exact render={() => <DailyAverageChart xPadding={xPadding} yPadding={yPadding} changeCurrentPath={this.changeCurrentPath} />} />} path='/average' />
 
-            {/* Default */}
-            <Route component={Error} path='*' />
           </Switch>
-        </Suspense>
-      </Router>
-    );
+
+        </Router>
+      )
+    }
   }
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // Change date to date selected on calendar
-  setDate = (date) => {
-
-    // Need to call changeGraph like this so that
-    // it has access to the updated state
-    this.setState({ date }, () => this.changeGraph(date));
-  }
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // Get graph data for a certain day
-  changeGraph = (date) => {
-
-    // Reformat the date to make it easier to pass into DB/title
-    const year = date.getFullYear().toString();
-    let month = (date.getMonth() + 1).toString();
-    let day = date.getDate().toString();
-
-    if (month.length === 1) {
-      month = '0' + month;
+  // Flip login status
+  changeLoginStatus = () => {
+    if (Cookie.get("signedin") === "false" || !Cookie.get("signedin")) {
+      Cookie.set("signedin", true, { expires: 1 });
+    } else if (Cookie.get("signedin") === "true") {
+      Cookie.set("signedin", false);
     }
 
-    if (day.length === 1) {
-      day = '0' + day;
-    }
-
-    const fullDate = `${year}-${month}-${day}`;
-
-    fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
-      method: 'post', // Can't pass in body if it's a GET
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        newDate: fullDate // Pass in the new date
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Change the dailyData to reflect the new date
-        // TODO: Don't set up initial dailyData like this. Idea: update DB to include a 0 catch every day
-        dailyData = [{ x: 0, y: 0 }].concat(data.map((num, index) => ({ x: index + 1, y: parseInt(num.catches) })));
-        this.setState({ dailyData });
-      });
+    this.setState(prevState => ({
+      loggedIn: !prevState.loggedIn
+    }))
   }
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // Update DB/graph when data is input
-  updateDailyData = (catches) => {
-    fetch('https://obscure-river-59718.herokuapp.com/dailyupdate', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        catches: catches
-      })
-    })
-      .then(response => response.json())
-      .then((res) => {
-        this.setState({ date: new Date() }, () => this.changeGraph(this.state.date));
-        return res;
-      })
-      .then((res) => {
-        // Update the state
-        // I COULD call changeGraph but that would just take too much time tbh
-        // TODO: Is there a better way to do this? Combine this function and changeGraph somehow?
-        dailyData.push({ x: dailyData.length, y: res.catches })
-        this.setState({ dailyData })
-      })
-      .then(() => this.getAverageData(this.state.date));
-  }
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // Get average data graph
-  getAverageData = (date) => {
-    const year = date.getFullYear().toString();
-    let month = (date.getMonth() + 1).toString();
-
-    if (month.length === 1) {
-      month = '0' + month;
-    }
-
-    const selectedMonth = year + '-' + month;
-
-    fetch('https://obscure-river-59718.herokuapp.com/averagegraph', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        selectedMonth: selectedMonth
-      })
-    })
-      .then(response => response.json())
-      .then((avgdata) => {
-        dailyAverageData = avgdata.map((dat) => ({ x: dat.to_char.substring(9, 10), y: parseFloat(dat.avg) }));
-        this.setState({ dailyAverageData, averageDate: date });
-      })
+  // Update current path
+  changeCurrentPath = (path) => {
+    localStorage.setItem('path', path);
   }
 }
 

@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import { VictoryTheme, VictoryChart, VictoryLine, VictoryAxis, VictoryVoronoiContainer, VictoryScatter, VictoryLabel } from 'victory';
 import DateSelect from '../Components/DateSelect';
 import DataEntryField from './DataEntryField';
+import { withRouter } from 'react-router-dom';
+
+let dailyData = [];
 
 class DailyChart extends Component {
+    constructor() {
+        super();
+        this.state = {
+            dailyData: dailyData,
+            date: new Date(),
+        }
+    }
 
     // Removes noise from data by taking average every chunk-sized chunks
     removeNoise = (data, chunk) => {
@@ -35,6 +45,9 @@ class DailyChart extends Component {
         return deletedNoiseArray;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Turn date into a string
     stringifyDate = (date) => {
         // Reformat the date to make it easier to pass into DB/title
         const year = date.getFullYear().toString();
@@ -52,8 +65,89 @@ class DailyChart extends Component {
         return `${year}-${month}-${day}`;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Change date to date selected on calendar
+    setDate = (date) => {
+        // Need to call changeGraph like this so that
+        // it has access to the updated state
+        this.setState({ date }, () => this.changeGraph(date));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Get graph data for a certain day
+    changeGraph = (date) => {
+
+        // Reformat the date to make it easier to pass into DB/title
+        const year = date.getFullYear().toString();
+        let month = (date.getMonth() + 1).toString();
+        let day = date.getDate().toString();
+
+        if (month.length === 1) {
+            month = '0' + month;
+        }
+
+        if (day.length === 1) {
+            day = '0' + day;
+        }
+
+        const fullDate = `${year}-${month}-${day}`;
+
+        fetch('http://localhost:3000/dailygraph', {
+            method: 'post', // Can't pass in body if it's a GET
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                newDate: fullDate // Pass in the new date
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Change the dailyData to reflect the new date
+                // TODO: Don't set up initial dailyData like this. Idea: update DB to include a 0 catch every day
+                dailyData = [{ x: 0, y: 0 }].concat(data.map((num, index) => ({ x: index + 1, y: parseInt(num.catches) })));
+                this.setState({ dailyData });
+            });
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Update DB/graph when data is input
+    updateDailyData = (catches) => {
+        fetch('http://localhost:3000/dailyupdate', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                catches: catches
+            })
+        })
+            .then(response => response.json())
+            .then((res) => {
+                this.setState({ date: new Date() }, () => this.changeGraph(this.state.date));
+                return res;
+            })
+            .then((res) => {
+                // Update the state
+                // I COULD call changeGraph but that would just take too much time tbh
+                // TODO: Is there a better way to do this? Combine this function and changeGraph somehow?
+                dailyData.push({ x: dailyData.length, y: res.catches });
+                this.setState({ dailyData });
+            });
+        // .then(() => this.getAverageData(this.state.date));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Update state and get data when app opened
+    componentDidMount() {
+        this.setDate(this.state.date);
+        this.props.changeCurrentPath(this.props.location.pathname);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     render() {
-        const { dailyData, updateDailyData, xPadding, yPadding, date, setDate } = this.props;
+        const { xPadding, yPadding } = this.props;
 
         let deletedNoiseArray = [];
         const chunk = 5;
@@ -62,7 +156,9 @@ class DailyChart extends Component {
             deletedNoiseArray = this.removeNoise(dailyData, chunk).map((val, ind) => ({ x: (ind) * 5, y: val }));
         }
 
-        const currentDate = this.stringifyDate(date);
+        const currentDate = this.stringifyDate(this.state.date);
+
+        dailyData = this.state.dailyData;
 
         return (
             <div className='flex justify-center'>
@@ -142,12 +238,12 @@ class DailyChart extends Component {
 
                         {/* Enter number field */}
                         <div className='mb3 overflow-auto'  >
-                            <DataEntryField updateDailyData={updateDailyData} />
+                            <DataEntryField updateDailyData={this.updateDailyData} />
                         </div>
 
-                        {/* Select date */}
+                        {/* Date picker */}
                         <div>
-                            <DateSelect setDate={setDate} date={date} />
+                            <DateSelect setDate={this.setDate} date={this.state.date} />
                         </div>
                     </div>
 
@@ -157,4 +253,4 @@ class DailyChart extends Component {
     }
 }
 
-export default DailyChart;
+export default withRouter(DailyChart);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Nav = () => {
+const Nav = ({ changeLoginStatus }) => {
     return (
         <nav className="row navbar navbar-expand-lg navbar-dark bg-dark">
             <NavLink exact className="ml3 navbar-brand" activeClassName='' to='/'>Juggling Hell</NavLink>
@@ -16,10 +16,15 @@ const Nav = () => {
                     <li>
                         <NavLink exact className="Nav__link tab nav-item nav-link" activeClassName='active' to='/average'>Average</NavLink>
                     </li>
+                    <li>
+                        <NavLink exact className='Nav__link tab nav-item nav-link' onClick={() => changeLoginStatus()} to='/signin'>Sign out</NavLink>
+                    </li>
                 </ul>
             </div>
         </nav >
     );
 }
+
+
 
 export default Nav;
