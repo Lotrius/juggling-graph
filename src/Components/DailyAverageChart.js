@@ -14,39 +14,6 @@ class DailyAverageChart extends Component {
         }
     }
 
-    // Get average data graph
-    getAverageData = (date) => {
-        const year = date.getFullYear().toString();
-        let month = (date.getMonth() + 1).toString();
-
-        if (month.length === 1) {
-            month = '0' + month;
-        }
-
-        const selectedMonth = year + '-' + month;
-
-        fetch('http://localhost:3000/averagegraph', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                selectedMonth: selectedMonth
-            })
-        })
-            .then(response => response.json())
-            .then((avgdata) => {
-                dailyAverageData = avgdata.map((dat) => ({ x: dat.to_char.substring(8, 10), y: parseFloat(dat.avg) }));
-                this.setState({ dailyAverageData, averageDate: date });
-            })
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Update state and get data when app opened
-    componentDidMount() {
-        this.getAverageData(this.state.averageDate);
-        this.props.changeCurrentPath(this.props.location.pathname);
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     render() {
@@ -108,6 +75,43 @@ class DailyAverageChart extends Component {
                 <DateSelectAvg getAverageData={this.getAverageData} averageDate={this.state.averageDate} />
             </div>
         );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Get average data graph
+    getAverageData = (date) => {
+        // Stringify date
+        const year = date.getFullYear().toString();
+        let month = (date.getMonth() + 1).toString();
+
+        if (month.length === 1) {
+            month = '0' + month;
+        }
+
+        const selectedMonth = year + '-' + month;
+
+        // Call to backend
+        fetch('http://localhost:3000/averagegraph', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                selectedMonth: selectedMonth
+            })
+        })
+            .then(response => response.json())
+            .then((avgdata) => {
+                dailyAverageData = avgdata.map((dat) => ({ x: dat.to_char.substring(8, 10), y: parseFloat(dat.avg) }));
+                this.setState({ dailyAverageData, averageDate: date });
+            })
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Update state and get data when app opened
+    componentDidMount() {
+        this.getAverageData(this.state.averageDate);
+        this.props.changeCurrentPath(this.props.location.pathname);
     }
 }
 
