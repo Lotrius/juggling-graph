@@ -92,7 +92,7 @@ class DailyAverageChart extends Component {
         const selectedMonth = year + '-' + month;
 
         // Call to backend
-        fetch('http://localhost:3000/averagegraph', {
+        fetch('https://obscure-river-59718.herokuapp.com/averagegraph', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

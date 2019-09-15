@@ -214,7 +214,7 @@ class DailyChart extends Component {
         const fullDate = `${year}-${month}-${day}`;
 
         // Call to backend to get data
-        fetch('http://localhost:3000/dailygraph', {
+        fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
             method: 'post', // Can't pass in body if it's a GET
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -234,7 +234,7 @@ class DailyChart extends Component {
 
     // Update DB/graph when data is input
     updateDailyData = (catches) => {
-        fetch('http://localhost:3000/dailyupdate', {
+        fetch('https://obscure-river-59718.herokuapp.com/dailyupdate', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
