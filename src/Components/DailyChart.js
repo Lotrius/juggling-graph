@@ -5,7 +5,6 @@ import DataEntryField from './DataEntryField';
 import { withRouter } from 'react-router-dom';
 
 let dailyData = [];
-sessionStorage.setItem('date', new Date());
 
 class DailyChart extends Component {
     constructor() {

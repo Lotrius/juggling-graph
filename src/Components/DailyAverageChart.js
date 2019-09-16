@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 
 let dailyAverageData = [];
 
-sessionStorage.setItem('avgdate', new Date());
-
 class DailyAverageChart extends Component {
     constructor() {
         super();

@@ -69,6 +69,10 @@ class App extends Component {
         localStorage.setItem('guest', true);
       }
 
+      // Set session dates
+      sessionStorage.setItem('date', new Date());
+      sessionStorage.setItem('avgdate', new Date());
+
       // Signed in cookie true
       Cookie.set("signedin", true);
     }
@@ -79,9 +83,11 @@ class App extends Component {
       // If a guest, set guest status to false
       if (localStorage.getItem('guest') === "true") {
         localStorage.setItem('guest', false);
-        sessionStorage.removeItem('avgdate');
-        sessionStorage.removeItem('date');
       }
+
+      // Remove session data
+      sessionStorage.removeItem('avgdate');
+      sessionStorage.removeItem('date');
 
       // Change path to '/' so when signed in again,
       // will start at daily catches chart

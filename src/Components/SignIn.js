@@ -14,6 +14,8 @@ class SignIn extends React.Component {
     render() {
         // const { onRouteChange } = this.props; // Maybe I'll add this if I feel like it
 
+        const buttonColor = {backgroundColor: '#41A0BF'};
+
         return (
             <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
                 <main className="pa4 black-80">
@@ -27,7 +29,7 @@ class SignIn extends React.Component {
                                     <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                                     <input
                                         onChange={this.onEmailChange}
-                                        className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address" id="email-address"
+                                        className="pa2 input-reset ba bg-light-gray hover-bg-moon-gray hover-black w-100" type="email" name="email-address" id="email-address"
                                     />
                                 </div>
 
@@ -36,7 +38,7 @@ class SignIn extends React.Component {
                                     <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                     <input
                                         onChange={this.onPasswordChange}
-                                        className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password"
+                                        className="b pa2 input-reset ba bg-light-gray hover-bg-moon-gray hover-black w-100" type="password" name="password" id="password"
                                     />
                                 </div>
 
@@ -45,8 +47,8 @@ class SignIn extends React.Component {
                             </fieldset>
 
                             {/* Sign in */}
-                            <div className="">
-                                <input onClick={(event) => this.onSubmitSignIn(event, false)} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in" />
+                            <div>
+                                <input onClick={(event) => this.onSubmitSignIn(event, false)} className="b ph3 pv2 input-reset ba b--black grow pointer f4 dib br3" style={buttonColor} type="submit" value="Sign in" />
                             </div>
 
                             {/* Register */}
@@ -61,7 +63,12 @@ class SignIn extends React.Component {
                     <h1 className='mt4 tc'>- OR -</h1>
 
                     <div className='flex justify-center'>
-                        <input onClick={() => this.props.changeLoginStatus(true)} className="b mt3 ph3 pv2 input-reset ba b--black bg-transparent grow pointer f3" type="submit" value="Enter as guest" />
+                        <input onClick={() => this.props.changeLoginStatus(true)} className="b mt3 ph3 pv2 input-reset ba b--black grow pointer f3 br3" type="submit" style={buttonColor} value="Enter as guest" />
+                    </div>
+
+                    <div className='flex flex-column mt3'>
+                        <p className=''>Signing in as a guest means you can see my progress but will be unable to add any data.</p>
+                        <p className=''>Registration is currently not an option. It may also never be an option.</p>
                     </div>
                 </main>
             </article>
@@ -89,7 +96,7 @@ class SignIn extends React.Component {
         event.preventDefault(); // Stop page refresh when enter is pressed
 
         // Call to backend
-        fetch('http://localhost:3000/signin', {
+        fetch('https://obscure-river-59718.herokuapp.com/signin', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
