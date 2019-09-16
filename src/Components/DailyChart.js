@@ -45,6 +45,8 @@ class DailyChart extends Component {
 
         dailyData = this.state.dailyData; // Current data
 
+        const average = (dailyData.length === 1) ? 0 : (dailyData.reduce((acc, val) => acc + val.y, 0) / (dailyData.length - 1)).toFixed(2); // Average
+
         return (
             <div className='flex justify-center'>
                 <div className='mr5' style={{ 'width': '600px' }}>
@@ -124,8 +126,11 @@ class DailyChart extends Component {
                         <div>
                             <DateSelect setDate={this.setDate} date={currentDate} />
                         </div>
-                    </div>
 
+                        <div className='mt3'>
+                          <h3>Average: {average}</h3>  
+                        </div>
+                    </div>
                 </div>
             </div>
         );
