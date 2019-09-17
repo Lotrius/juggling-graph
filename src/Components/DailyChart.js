@@ -3,6 +3,7 @@ import { VictoryTheme, VictoryChart, VictoryLine, VictoryAxis, VictoryVoronoiCon
 import DateSelect from '../Components/DateSelect';
 import DataEntryField from './DataEntryField';
 import { withRouter } from 'react-router-dom';
+import './Chart.css'
 
 let dailyData = [];
 
@@ -51,9 +52,9 @@ class DailyChart extends Component {
 
         return (
             <div className='mt3 flex justify-center'>
-                <div className='flex justify-center mt2 pl3 pr3 ba br3 bw1' style={{ backgroundColor: '#ECD9BA' }}>
+                <div className='cont flex justify-center mt2 pl3 pr3 ba br3 bw1' style={{ backgroundColor: '#ECD9BA' }}>
 
-                    <div className='mr3 br bw1' style={{ 'width': '600px' }}>
+                    <div className='chart mr3 bw1' style={{ 'width': '600px' }}>
                         <VictoryChart
                             className='mt6'
                             theme={VictoryTheme.material}
@@ -129,7 +130,7 @@ class DailyChart extends Component {
                             </div>
 
                             {/* Date picker */}
-                            <div className='mt4'>
+                            <div className='date mt4'>
                                 <DateSelect setDate={this.setDate} date={currentDate} />
                             </div>
                         </div>

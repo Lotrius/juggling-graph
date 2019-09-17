@@ -14,7 +14,7 @@ class DataEntryField extends Component {
                         <input
                             className={`f6 mb2 input-reset fl black-80  pa3 lh-solid w-100 w-75-m w-80-l br3 b--black ${guest === 'true' ? 'bg-moon-gray' : 'bg-white'}`}
                             type='text'
-                            placeholder='Number of catches'
+                            placeholder={`Number of catches ${guest === 'true' ? '(disabled as guest)' : ''}`}
                             ref="input"
                             disabled={guest === 'true' ? true : null}
                         />

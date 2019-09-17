@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { VictoryTheme, VictoryChart, VictoryBar, VictoryAxis, VictoryVoronoiContainer, VictoryLabel } from 'victory';
 import DateSelectAvg from './DateSelectAvg';
 import { withRouter } from 'react-router-dom';
+import './Chart.css'
 
 let dailyAverageData = [];
 
@@ -40,8 +41,8 @@ class DailyAverageChart extends Component {
 
         return (
             <div className='mt3 flex justify-center'>
-                <div className='flex justify-center mt2 pl3 pr3 ba br3 bw1' style={{ backgroundColor: '#ECD9BA' }}>
-                    <div className='mr3 br bw1' style={{ 'width': '600px' }}>
+                <div className='cont flex justify-center mt2 pl3 pr3 ba bw1' style={{ backgroundColor: '#ECD9BA' }}>
+                    <div className='chart mr3 bw1' style={{ 'width': '600px' }}>
                         {/* Chart */}
                         <VictoryChart
                             theme={VictoryTheme.material}
@@ -85,7 +86,7 @@ class DailyAverageChart extends Component {
 
 
                     {/* Date picker */}
-                    <div className='ml3 mt5 center' style={{ 'width': '225px' }}>
+                    <div className='date ml3 mt5 center' style={{ 'width': '225px' }}>
                         <div className='center'>
                             <DateSelectAvg setDate={this.setDate} averageDate={currentDate} />
                         </div>
