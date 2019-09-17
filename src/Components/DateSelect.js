@@ -8,7 +8,7 @@ class DateSelect extends Component {
 
     return (
       <div >
-        <DatePicker selected={date} onChange={date => this.props.setDate(date)} />
+        <DatePicker className='' selected={date} onChange={date => this.props.setDate(date)} />
       </div>
 
     );

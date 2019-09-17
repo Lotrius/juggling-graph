@@ -17,7 +17,7 @@ const Nav = ({ changeLoginStatus }) => {
                         <NavLink exact className="Nav__link tab nav-item nav-link" activeClassName='active' to='/average'>Average</NavLink>
                     </li>
                     <li>
-                        <NavLink exact className='Nav__link tab nav-item nav-link' onClick={() => changeLoginStatus()} to='/signin'>Sign out</NavLink>
+                        <NavLink exact className='Nav__link tab nav-item nav-link' style={{color: 'red'}} onClick={() => changeLoginStatus()} to='/signin'>Sign out</NavLink>
                     </li>
                 </ul>
             </div>

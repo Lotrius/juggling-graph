@@ -20,8 +20,8 @@ class DailyChart extends Component {
     componentDidMount() {
         if (sessionStorage.getItem('date')) {
             this.setDate(new Date(sessionStorage.getItem('date')));
-        } 
-        
+        }
+
         this.props.changeCurrentPath(this.props.location.pathname);
     }
 
@@ -47,93 +47,118 @@ class DailyChart extends Component {
 
         const average = (dailyData.length === 1) ? 0 : (dailyData.reduce((acc, val) => acc + val.y, 0) / (dailyData.length - 1)).toFixed(2); // Average
 
+        const styles = this.getStyles(xPadding, yPadding); // Chart styles
+
         return (
-            <div className='flex justify-center'>
-                <div className='mr5' style={{ 'width': '600px' }}>
-                    <VictoryChart
-                        className='mt6'
-                        theme={VictoryTheme.material}
-                        domainPadding={{ x: [0, 30], y: [0, 30] }} // Fix weird cutoff problem sort of
+            <div className='mt3 flex justify-center'>
+                <div className='flex justify-center mt2 pl3 pr3 ba br3 bw1' style={{ backgroundColor: '#ECD9BA' }}>
 
-                        // Component allows hovering over data for information
-                        containerComponent={
-                            <VictoryVoronoiContainer
-                                labels={({ datum }) => `Attempt ${datum.x}: ${datum.y} catches`}
-                                voronoiBlacklist={['points', 'noise']}
-                            />}
+                    <div className='mr3 br bw1' style={{ 'width': '600px' }}>
+                        <VictoryChart
+                            className='mt6'
+                            theme={VictoryTheme.material}
+                            domainPadding={{ x: [0, 30], y: [0, 30] }} // Fix weird cutoff problem sort of
 
-                        style={{ parent: { maxWidth: '200%' } }}
-                    >
+                            // Component allows hovering over data for information
+                            containerComponent={
+                                <VictoryVoronoiContainer
+                                    labels={({ datum }) => `Attempt ${datum.x}: ${datum.y} catches`}
+                                    voronoiBlacklist={['points', 'noise']}
+                                />}
+                        >
 
-                        {/* Title */}
-                        <VictoryLabel text={`Catches ${titleDate}`} x={180} y={30} textAnchor="middle" />
+                            {/* Title */}
+                            <VictoryLabel text={`Catches ${titleDate}`} x={180} y={30} textAnchor="middle" />
 
-                        {/* Axes and labels */}
-                        <VictoryAxis
-                            style={{ axisLabel: { padding: xPadding }, axis: { padding: 100 } }}
-                            label='Attempt'
-                        />
-                        <VictoryAxis
-                            style={{ axisLabel: { padding: yPadding } }}
-                            dependentAxis
-                            label='Catches'
-                        />
+                            {/* Axes and labels */}
+                            <VictoryAxis
+                                style={styles.xAxis}
+                                label='Attempt'
+                                fixLabelOverlap
+                            />
+                            <VictoryAxis
+                                style={styles.yAxis}
+                                dependentAxis
+                                label='Catches'
+                                fixLabelOverlap
+                            />
 
-                        {/* Line graph */}
-                        <VictoryLine
-                            data={dailyData.length === 1 ? [] : dailyData}
-                            animate={{
-                                duration: 1000,
-                                onLoad: { duration: 2000 }
-                            }}
-                        />
+                            {/* Line graph */}
+                            <VictoryLine
+                                data={dailyData.length === 1 ? [] : dailyData}
+                                animate={{
+                                    duration: 1000,
+                                    onLoad: { duration: 2000 }
+                                }}
+                            />
 
-                        {/* Data with noise removed */}
-                        <VictoryLine
-                            name='noise'
-                            data={deletedNoiseArray}
-                            style={{
-                                data: { stroke: "#c43a31" }
-                            }}
-                            animate={{
-                                duration: 1000,
-                                onLoad: { duration: 2000 }
-                            }}
-                        />
+                            {/* Data with noise removed */}
+                            <VictoryLine
+                                name='noise'
+                                data={deletedNoiseArray}
+                                style={styles.average}
+                                animate={{
+                                    duration: 1000,
+                                    onLoad: { duration: 2000 }
+                                }}
+                            />
 
-                        {/* Scatter plot */}
-                        <VictoryScatter
-                            name='points'
-                            data={dailyData.length === 1 ? [] : dailyData}
-                            animate={{
-                                duration: 1000,
-                                onLoad: { duration: 2000 }
-                            }}
-                        />
-                    </VictoryChart>
-                </div>
+                            {/* Scatter plot */}
+                            <VictoryScatter
+                                name='points'
+                                data={dailyData.length === 1 ? [] : dailyData}
+                                animate={{
+                                    duration: 1000,
+                                    onLoad: { duration: 2000 }
+                                }}
+                            />
+                        </VictoryChart>
+                    </div>
 
-                {/* Input field and date selector */}
-                <div className='mt5' style={{ 'width': '300px' }}>
-                    <div className='center'>
+                    {/* Input field and date selector */}
+                    <div className='ml3 mt5' style={{ 'width': '300px' }}>
+                        <div className='center'>
 
-                        {/* Enter number field */}
-                        <div className='mb3 overflow-auto'  >
-                            <DataEntryField guest={this.props.guest} updateDailyData={this.updateDailyData} />
-                        </div>
+                            {/* Enter number field */}
+                            <div className='overflow-auto'>
+                                <DataEntryField guest={this.props.guest} updateDailyData={this.updateDailyData} />
+                            </div>
 
-                        {/* Date picker */}
-                        <div>
-                            <DateSelect setDate={this.setDate} date={currentDate} />
-                        </div>
+                            <div className='mt4'>
+                                <h3>Average: {average}</h3>
+                            </div>
 
-                        <div className='mt3'>
-                          <h3>Average: {average}</h3>  
+                            {/* Date picker */}
+                            <div className='mt4'>
+                                <DateSelect setDate={this.setDate} date={currentDate} />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    getStyles = (xPadding, yPadding) => {
+        return {
+            xAxis: {
+                axisLabel: { padding: xPadding, fill: 'black' },
+                axis: { padding: 100, stroke: 'black' },
+                tickLabels: { fill: 'black' },
+                ticks: { stroke: 'black' }
+            },
+            yAxis: {
+                axisLabel: { padding: yPadding, fill: 'black' },
+                axis: { stroke: 'black' },
+                tickLabels: { fill: 'black' },
+                ticks: { stroke: 'black' }
+            },
+            average: {
+                data: { stroke: "#c43a31" }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +218,7 @@ class DailyChart extends Component {
     // Change date to date selected on calendar
     setDate = (date) => {
         sessionStorage.setItem('date', date);
-        
+
         this.getDailyData(new Date(sessionStorage.getItem('date')));
     }
 
