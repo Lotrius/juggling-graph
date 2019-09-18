@@ -184,8 +184,13 @@ class DailyChart extends Component {
             // Accumulate sum
             acc += catchPoints[i];
 
-            // If we are at the last element, just push in average for however much was left
-            if (i === length - 1) {
+            // If length is divisible by chunk, just push average for chunk size
+            if (!(length % chunk) && i === length - 1) {
+                deletedNoiseArray.push(acc / (chunk));
+            }
+
+            // Else if we are at the last element, just push in average for however much was left
+            else if (i === length - 1) {
                 deletedNoiseArray.push(acc / (length % chunk));
             }
         }

@@ -9,13 +9,11 @@ const DailyAverageChart = loadable(() => import('../Components/DailyAverageChart
 const Nav = loadable(() => import('../Components/Nav'));
 
 class App extends Component {
-  componentDidMount() {
+  render() {
     // Set session dates
     sessionStorage.setItem('date', new Date());
     sessionStorage.setItem('avgdate', new Date());
-  }
 
-  render() {
     // Padding for the graphs cause otherwise the labels overlap
     // the numbers and it looks like hot garbage
     const xPadding = 30;
