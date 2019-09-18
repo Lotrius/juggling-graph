@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "06c0fc83e2d0b6c1b6c627815e03b620",
+    "revision": "98655fefbc9d153c3181e2e4caf2a330",
     "url": "/juggling-graph/index.html"
   },
   {
@@ -12,15 +12,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/css/3.31dafeb2.chunk.css"
   },
   {
-    "revision": "34151053b9e988a4c6b1",
-    "url": "/juggling-graph/static/css/4.061e9291.chunk.css"
+    "revision": "d9f6ebb08747d54d5d3b",
+    "url": "/juggling-graph/static/css/4.fe4b0fe7.chunk.css"
   },
   {
-    "revision": "347c424db200597cfd9d",
-    "url": "/juggling-graph/static/css/5.061e9291.chunk.css"
+    "revision": "7efc6d221e7c3f096b17",
+    "url": "/juggling-graph/static/css/5.fe4b0fe7.chunk.css"
   },
   {
-    "revision": "c9145792c71af55c4c00",
+    "revision": "3b9788ad56532ce7cac8",
     "url": "/juggling-graph/static/css/main.e92517c3.chunk.css"
   },
   {
@@ -32,11 +32,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/js/3.62f801bb.chunk.js"
   },
   {
-    "revision": "34151053b9e988a4c6b1",
-    "url": "/juggling-graph/static/js/4.56415084.chunk.js"
+    "revision": "d9f6ebb08747d54d5d3b",
+    "url": "/juggling-graph/static/js/4.53494aa8.chunk.js"
   },
   {
-    "revision": "347c424db200597cfd9d",
+    "revision": "7efc6d221e7c3f096b17",
     "url": "/juggling-graph/static/js/5.8c4bbbed.chunk.js"
   },
   {
@@ -56,11 +56,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/js/9.f33eab4b.chunk.js"
   },
   {
-    "revision": "c9145792c71af55c4c00",
-    "url": "/juggling-graph/static/js/main.cd12b8d5.chunk.js"
+    "revision": "3b9788ad56532ce7cac8",
+    "url": "/juggling-graph/static/js/main.e5d599b4.chunk.js"
   },
   {
-    "revision": "08bce908e830c6ed9808",
-    "url": "/juggling-graph/static/js/runtime~main.b98bf39e.js"
+    "revision": "6689b7d0bb59830b72aa",
+    "url": "/juggling-graph/static/js/runtime~main.18dfc840.js"
   }
 ]);
