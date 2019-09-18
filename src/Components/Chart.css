@@ -1,19 +1,23 @@
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
+    hr {
+        border-color: black !important;
+    }
     .cont {
         flex-direction: column !important;
     }
     .chart {
         border-bottom: .125rem solid black;
         margin-bottom: 5px;
-        width: 350px !important;
+        width: 100% !important;
     }
     .date {
         margin-bottom: 50px;
     }
 }
 
-@media only screen and (min-width: 601px) {
+@media only screen and (min-width: 801px) {
     .chart {
-        border-right: .125rem solid black
+        border-right: .125rem solid black;
+        margin-right: 1rem;
     }
 }

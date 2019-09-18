@@ -42,7 +42,7 @@ class DailyAverageChart extends Component {
         return (
             <div className='mt3 flex justify-center'>
                 <div className='cont flex justify-center mt2 pl3 pr3 ba bw1' style={{ backgroundColor: '#ECD9BA' }}>
-                    <div className='chart mr3 bw1' style={{ 'width': '600px' }}>
+                    <div className='chart mr3' style={{ 'width': '600px' }}>
                         {/* Chart */}
                         <VictoryChart
                             theme={VictoryTheme.material}

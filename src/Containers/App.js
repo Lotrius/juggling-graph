@@ -9,6 +9,12 @@ const DailyAverageChart = loadable(() => import('../Components/DailyAverageChart
 const Nav = loadable(() => import('../Components/Nav'));
 
 class App extends Component {
+  componentDidMount() {
+    // Set session dates
+    sessionStorage.setItem('date', new Date());
+    sessionStorage.setItem('avgdate', new Date());
+  }
+
   render() {
     // Padding for the graphs cause otherwise the labels overlap
     // the numbers and it looks like hot garbage
@@ -68,10 +74,6 @@ class App extends Component {
       if (guest) {
         localStorage.setItem('guest', true);
       }
-
-      // Set session dates
-      sessionStorage.setItem('date', new Date());
-      sessionStorage.setItem('avgdate', new Date());
 
       // Signed in cookie true
       Cookie.set("signedin", true);
