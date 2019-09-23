@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Input.css'
 
 class DataEntryField extends Component {
     render() {
@@ -13,6 +14,7 @@ class DataEntryField extends Component {
                     <div>
                         <input
                             className={`f6 mb2 input-reset fl black-80 pa3 lh-solid w-100 w-75-m w-80-l br3 b--black ${guest === 'true' ? 'bg-moon-gray' : 'bg-white'}`}
+                            style={{outline: 'none'}}
                             type='number'
                             placeholder={`Number of catches ${guest === 'true' ? '(disabled as guest)' : ''}`}
                             ref="input"
@@ -24,6 +26,7 @@ class DataEntryField extends Component {
                     <div>
                         <input
                             className={`f6 button-reset pv3 tc bn bg-green hover-bg-green white w-50 w-25-m w-20-l br3 ${guest === 'true' ? null : 'pointer'}`}
+                            style={{outline: 'none'}}
                             type='submit'
                             value='Add'
                             disabled={guest === 'true' ? true : null}

@@ -296,6 +296,7 @@ class DailyChart extends Component {
                 // Update the state
                 // I COULD call getDailyData but that would just take too much time tbh
                 // TODO: Is there a better way to do this? Combine this function and getDailyData somehow?
+                sessionStorage.setItem('date', new Date());
                 dailyData.push({ x: dailyData.length, y: res.catches });
                 this.setState({ dailyData });
             });
