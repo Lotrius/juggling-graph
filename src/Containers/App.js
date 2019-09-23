@@ -17,7 +17,7 @@ class App extends Component {
     // Padding for the graphs cause otherwise the labels overlap
     // the numbers and it looks like hot garbage
     const xPadding = 30;
-    const yPadding = 40;
+    const yPadding = 35;
 
     let path = localStorage.getItem('path'); // Current path
 

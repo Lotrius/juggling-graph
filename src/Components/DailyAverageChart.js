@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryTheme, VictoryChart, VictoryBar, VictoryAxis, VictoryVoronoiContainer, VictoryLabel } from 'victory';
+import { VictoryTheme, VictoryChart, VictoryBar, VictoryAxis, VictoryLabel, VictoryTooltip } from 'victory';
 import DateSelectAvg from './DateSelectAvg';
 import { withRouter } from 'react-router-dom';
 import './Chart.css'
@@ -46,14 +46,6 @@ class DailyAverageChart extends Component {
                         <VictoryChart
                             theme={VictoryTheme.material}
                             domainPadding={{ x: [50, 30], y: [50, 30] }} // Fix overlapping/cutoff problem
-
-                            // Component allows hovering over data for information
-                            containerComponent={
-                                <VictoryVoronoiContainer
-                                    labels={({ datum }) => `${datum.x} average: ${+datum.y.toFixed(2)} catches`}
-                                    voronoiBlacklist={['points']}
-                                />
-                            }
                         >
 
                             {/* Title */}
@@ -84,6 +76,8 @@ class DailyAverageChart extends Component {
                             {/* Bar graph */}
                             <VictoryBar
                                 data={dailyAverageData}
+                                labels={({ datum }) => `${datum.x} average: ${+datum.y.toFixed(2)} catches`}
+                                labelComponent={<VictoryTooltip constrainToVisibleArea />}
                                 animate={{
                                     duration: 1000,
                                     onLoad: { duration: 0 }
@@ -159,7 +153,7 @@ class DailyAverageChart extends Component {
         })
             .then(response => response.json())
             .then((avgdata) => {
-                dailyAverageData = avgdata.map((dat) => ({ x: dat.to_char.substring(8, 10), y: parseFloat(dat.avg) }));
+                dailyAverageData = avgdata.map((dat) => ({ x: parseInt(dat.to_char.substring(8, 10)), y: parseFloat(dat.avg) }));
                 this.setState({ dailyAverageData });
             })
     }
