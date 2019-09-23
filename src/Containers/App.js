@@ -40,23 +40,26 @@ class App extends Component {
     // Else go to main page
     else if (Cookie.get("signedin") === "true") {
       return (
-        <Router basename='/juggling-graph'>
+        <div className='container-fluid'>
+          <Router basename='/juggling-graph'>
 
-          {/* Redirect to main page */}
-          <Redirect to={path ? path : '/'} />
+            {/* Redirect to main page */}
+            <Redirect to={path ? path : '/'} />
 
-          <Nav changeLoginStatus={this.changeLoginStatus} />
+            <Nav changeLoginStatus={this.changeLoginStatus} />
 
-          <Switch>
+            <Switch>
 
-            {/* Daily catches graph */}
-            <Route exact render={() => <DailyChart xPadding={xPadding} yPadding={yPadding} guest={guest} changeCurrentPath={this.changeCurrentPath} />} path='/' />
+              {/* Daily catches graph */}
+              <Route exact render={() => <DailyChart xPadding={xPadding} yPadding={yPadding} guest={guest} changeCurrentPath={this.changeCurrentPath} />} path='/' />
 
-            {/* Daily average catches graph */}
-            <Route exact render={() => <DailyAverageChart xPadding={xPadding} yPadding={yPadding} guest={guest} changeCurrentPath={this.changeCurrentPath} />} path='/average' />
+              {/* Daily average catches graph */}
+              <Route exact render={() => <DailyAverageChart xPadding={xPadding} yPadding={yPadding} guest={guest} changeCurrentPath={this.changeCurrentPath} />} path='/average' />
 
-          </Switch>
-        </Router>
+            </Switch>
+          </Router>
+        </div>
+
       )
     }
   }

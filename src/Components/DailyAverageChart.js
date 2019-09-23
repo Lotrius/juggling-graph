@@ -37,11 +37,10 @@ class DailyAverageChart extends Component {
         let dailyAverageDataMonth = months[(currentDate.getMonth())]; // Declare month name var
 
         const styles = this.getStyles(xPadding, yPadding);
-        console.log(styles.xAxis);
 
         return (
             <div className='mt3 flex justify-center'>
-                <div className='cont flex justify-center mt2 pl3 pr3 ba bw1' style={{ backgroundColor: '#ECD9BA' }}>
+                <div className='cont flex justify-center mt2 mb3 pl3 pr3 ba bw1' style={{ backgroundColor: '#ECD9BA' }}>
                     <div className='chart mr3' style={{ 'width': '600px' }}>
                         {/* Chart */}
                         <VictoryChart
@@ -73,6 +72,15 @@ class DailyAverageChart extends Component {
                                 fixLabelOverlap
                             />
 
+                            {/* Displays if there is no data available */}
+                            <VictoryLabel
+                                text='No data available'
+                                x={180}
+                                y={180}
+                                textAnchor='middle'
+                                style={dailyAverageData.length === 0 ? null : { display: 'none', zIndex: '100' }}
+                            />
+
                             {/* Bar graph */}
                             <VictoryBar
                                 data={dailyAverageData}
@@ -87,10 +95,8 @@ class DailyAverageChart extends Component {
 
                     {/* Date picker */}
                     <div className='date ml3 mt5 center' style={{ 'width': '225px' }}>
-                        <div className='center'>
-                            <DateSelectAvg setDate={this.setDate} averageDate={currentDate} />
-                        </div>
-
+                        <h3>Select date:</h3>
+                        <DateSelectAvg setDate={this.setDate} averageDate={currentDate} />
                     </div>
 
                 </div>
@@ -103,7 +109,7 @@ class DailyAverageChart extends Component {
     getStyles = (xPadding, yPadding) => {
         return {
             xAxis: {
-                axisLabel: { padding: xPadding, fill: 'black' }, 
+                axisLabel: { padding: xPadding, fill: 'black' },
                 axis: { padding: 100, stroke: 'black' },
                 tickLabels: { fill: 'black' },
                 ticks: { stroke: 'black' }

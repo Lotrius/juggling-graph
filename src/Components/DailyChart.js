@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryTheme, VictoryChart, VictoryLine, VictoryAxis, VictoryVoronoiContainer, VictoryScatter, VictoryLabel } from 'victory';
+import { VictoryTheme, VictoryChart, VictoryLine, VictoryAxis, VictoryScatter, VictoryLabel, VictoryTooltip } from 'victory';
 import DateSelect from '../Components/DateSelect';
 import DataEntryField from './DataEntryField';
 import { withRouter } from 'react-router-dom';
@@ -46,30 +46,30 @@ class DailyChart extends Component {
 
         dailyData = this.state.dailyData; // Current data
 
-        const average = (dailyData.length === 1) ? 0 : (dailyData.reduce((acc, val) => acc + val.y, 0) / (dailyData.length - 1)).toFixed(2); // Average
+        const isThereData = dailyData.length === 1;
+
+        const average = isThereData ? 0 : (dailyData.reduce((acc, val) => acc + val.y, 0) / (dailyData.length - 1)).toFixed(2); // Average
 
         const styles = this.getStyles(xPadding, yPadding); // Chart styles
 
         return (
             <div className='mt3 flex justify-center'>
-                <div className='cont flex justify-center mt2 pl3 pr3 ba br3 bw1' style={{ backgroundColor: '#ECD9BA' }}>
+                <div className='cont flex justify-center mt2 mb3 pl3 pr3 ba br3 bw1' style={{ backgroundColor: '#ECD9BA' }}>
 
                     <div className='chart mr3 bw1' style={{ 'width': '600px' }}>
                         <VictoryChart
                             className='mt6'
                             theme={VictoryTheme.material}
-                            domainPadding={{ x: [0, 30], y: [0, 30] }} // Fix weird cutoff problem sort of
-
-                            // Component allows hovering over data for information
-                            containerComponent={
-                                <VictoryVoronoiContainer
-                                    labels={({ datum }) => `Attempt ${datum.x}: ${datum.y} catches`}
-                                    voronoiBlacklist={['points', 'noise']}
-                                />}
+                            domainPadding={{ x: [0, 30], y: [0, 30] }} // Fix weird cutoff problem sort of   
                         >
 
                             {/* Title */}
-                            <VictoryLabel text={`Catches ${titleDate}`} x={180} y={30} textAnchor="middle" />
+                            <VictoryLabel
+                                text={`Catches ${titleDate}`}
+                                x={180}
+                                y={30}
+                                textAnchor="middle"
+                            />
 
                             {/* Axes and labels */}
                             <VictoryAxis
@@ -84,9 +84,18 @@ class DailyChart extends Component {
                                 fixLabelOverlap
                             />
 
+                            {/* Displays if there is no data available */}
+                            <VictoryLabel
+                                text='No data available'
+                                x={180}
+                                y={180}
+                                textAnchor='middle'
+                                style={isThereData ? null : { display: 'none', zIndex: '100' }}
+                            />
+
                             {/* Line graph */}
                             <VictoryLine
-                                data={dailyData.length === 1 ? [] : dailyData}
+                                data={isThereData ? [] : dailyData}
                                 animate={{
                                     duration: 1000,
                                     onLoad: { duration: 2000 }
@@ -107,7 +116,9 @@ class DailyChart extends Component {
                             {/* Scatter plot */}
                             <VictoryScatter
                                 name='points'
-                                data={dailyData.length === 1 ? [] : dailyData}
+                                data={isThereData ? [] : dailyData}
+                                labels={({ datum }) => `Attempt ${datum.x}: ${datum.y} catches`} // Component allows hovering over data for information
+                                labelComponent={<VictoryTooltip constrainToVisibleArea />}
                                 animate={{
                                     duration: 1000,
                                     onLoad: { duration: 2000 }
@@ -131,6 +142,7 @@ class DailyChart extends Component {
 
                             {/* Date picker */}
                             <div className='date mt4'>
+                                <h3>Select date:</h3>
                                 <DateSelect setDate={this.setDate} date={currentDate} />
                             </div>
                         </div>
@@ -185,7 +197,7 @@ class DailyChart extends Component {
             acc += catchPoints[i];
 
             // If length is divisible by chunk, just push average for chunk size
-            if (!(length % chunk) && i === length - 1) {
+            if (!(length % chunk) && (i === length - 1)) {
                 deletedNoiseArray.push(acc / (chunk));
             }
 
