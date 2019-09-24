@@ -3,7 +3,7 @@ import './Input.css'
 
 class DataEntryField extends Component {
     render() {
-        const { guest } = this.props;
+        const guest = localStorage.getItem('guest');
 
         return (
             // Form

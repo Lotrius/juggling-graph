@@ -133,7 +133,7 @@ class DailyChart extends Component {
 
                             {/* Enter number field */}
                             <div className='overflow-auto'>
-                                <DataEntryField guest={this.props.guest} updateDailyData={this.updateDailyData} />
+                                <DataEntryField updateDailyData={this.updateDailyData} />
                             </div>
 
                             <div className='mt4'>
@@ -260,7 +260,7 @@ class DailyChart extends Component {
         const fullDate = `${year}-${month}-${day}`;
 
         // Call to backend to get data
-        fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
+        fetch('http://localhost:3000/dailygraph', {
             method: 'post', // Can't pass in body if it's a GET
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -280,7 +280,13 @@ class DailyChart extends Component {
 
     // Update DB/graph when data is input
     updateDailyData = (catches) => {
-        fetch('https://obscure-river-59718.herokuapp.com/dailyupdate', {
+        if (localStorage.getItem('sandbox') === 'true') {
+            dailyData.push({ x: dailyData.length, y: catches });
+            this.setState({ dailyData });
+            return;
+        }
+
+        fetch('http://localhost:3000/dailyupdate', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

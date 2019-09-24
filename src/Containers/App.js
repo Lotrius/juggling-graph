@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import Cookie from 'js-cookie';
 import loadable from '@loadable/component';
 
+// Code splitting
 const SignIn = loadable(() => import('../Components/SignIn'));
 const DailyChart = loadable(() => import('../Components/DailyChart'));
 const DailyAverageChart = loadable(() => import('../Components/DailyAverageChart'));
@@ -20,8 +21,6 @@ class App extends Component {
     const yPadding = 35;
 
     let path = localStorage.getItem('path'); // Current path
-
-    let guest = localStorage.getItem('guest'); // Signed in as guest or not
 
     // If there's a cookie or if signed out, go to login page
     if (Cookie.get("signedin") === "false" || !Cookie.get("signedin")) {
@@ -51,10 +50,30 @@ class App extends Component {
             <Switch>
 
               {/* Daily catches graph */}
-              <Route exact render={() => <DailyChart xPadding={xPadding} yPadding={yPadding} guest={guest} changeCurrentPath={this.changeCurrentPath} />} path='/' />
+              <Route
+                exact
+                render={() =>
+                  <DailyChart
+                    xPadding={xPadding}
+                    yPadding={yPadding}
+                    changeCurrentPath={this.changeCurrentPath}
+                  />
+                }
+                path='/'
+              />
 
               {/* Daily average catches graph */}
-              <Route exact render={() => <DailyAverageChart xPadding={xPadding} yPadding={yPadding} guest={guest} changeCurrentPath={this.changeCurrentPath} />} path='/average' />
+              <Route
+                exact
+                render={() =>
+                  <DailyAverageChart
+                    xPadding={xPadding}
+                    yPadding={yPadding}
+                    changeCurrentPath={this.changeCurrentPath}
+                  />
+                }
+                path='/average'
+              />
 
             </Switch>
           </Router>
@@ -67,7 +86,10 @@ class App extends Component {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Flip login status
-  changeLoginStatus = (guest) => {
+  changeLoginStatus = (status) => {
+    const guest = status === 'guest';
+    const sandbox = status === 'sandbox';
+
     //If not signed in, or was never signed in to begin with and are now logging in,
     if (Cookie.get("signedin") === "false" || !Cookie.get("signedin")) {
 
@@ -75,17 +97,24 @@ class App extends Component {
       if (guest) {
         localStorage.setItem('guest', true);
       }
+      if (sandbox) {
+        localStorage.setItem('sandbox', true);
+      }
 
       // Signed in cookie true
       Cookie.set("signedin", true);
     }
 
     // If already signed in and logging out,
-    else if (Cookie.get("signedin") === "true") {
+    else if (Cookie.get('signedin') === 'true') {
 
       // If a guest, set guest status to false
-      if (localStorage.getItem('guest') === "true") {
+      if (localStorage.getItem('guest') === 'true') {
         localStorage.setItem('guest', false);
+      }
+
+      if (localStorage.getItem('sandbox') === 'true') {
+        localStorage.setItem('sandbox', false);
       }
 
       // Remove session data
@@ -97,7 +126,7 @@ class App extends Component {
       localStorage.setItem('path', '/');
 
       // Set signed in to false
-      Cookie.set("signedin", false);
+      Cookie.set('signedin', false);
     }
 
     this.forceUpdate(); // Force the app to rerender
