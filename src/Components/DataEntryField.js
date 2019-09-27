@@ -4,6 +4,17 @@ import './Input.css'
 class DataEntryField extends Component {
     render() {
         const guest = localStorage.getItem('guest');
+        const sandbox = localStorage.getItem('sandbox');
+
+        // Which button did the user press at the start
+        let state = '';
+        if (guest === 'true') {
+            state = '(disabled as guest)';
+        }
+
+        if (sandbox === 'true') {
+            state = '(sandbox)';
+        }
 
         return (
             // Form
@@ -14,9 +25,9 @@ class DataEntryField extends Component {
                     <div>
                         <input
                             className={`f6 mb2 input-reset fl black-80 pa3 lh-solid w-100 w-75-m w-80-l br3 b--black ${guest === 'true' ? 'bg-moon-gray' : 'bg-white'}`}
-                            style={{outline: 'none'}}
+                            style={{ outline: 'none' }}
                             type='number'
-                            placeholder={`Number of catches ${guest === 'true' ? '(disabled as guest)' : ''}`}
+                            placeholder={`Number of catches ${state}`}
                             ref="input"
                             disabled={guest === 'true' ? true : null}
                         />
@@ -26,7 +37,7 @@ class DataEntryField extends Component {
                     <div>
                         <input
                             className={`f6 button-reset pv3 tc bn bg-green hover-bg-green white w-50 w-25-m w-20-l br3 ${guest === 'true' ? null : 'pointer'}`}
-                            style={{outline: 'none'}}
+                            style={{ outline: 'none' }}
                             type='submit'
                             value='Add'
                             disabled={guest === 'true' ? true : null}
