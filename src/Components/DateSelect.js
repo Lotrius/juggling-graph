@@ -1,21 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import PropTypes from 'prop-types';
+import 'react-datepicker/dist/react-datepicker.css';
 
-class DateSelect extends Component {
-  render() {
-    const { date } = this.props;
+const DateSelect = ({ date, setDate }) => {
+  return (
+    <div>
+      <DatePicker
+        className="br3 pl2 blue bg-light-gray"
+        selected={date}
+        onChange={newDate => setDate(newDate)}
+      />
+    </div>
+  );
+};
 
-    return (
-      <div >
-        <DatePicker
-          className='br3 pl2 blue bg-light-gray'
-          selected={date}
-          onChange={date => this.props.setDate(date)} />
-      </div>
+DateSelect.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  date: PropTypes.object,
+  setDate: PropTypes.func
+};
 
-    );
-  }
-}
+DateSelect.defaultProps = {
+  date: new Date(),
+  setDate: null
+};
 
 export default DateSelect;
