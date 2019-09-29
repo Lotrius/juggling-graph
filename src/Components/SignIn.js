@@ -34,7 +34,7 @@ class SignIn extends React.Component {
     const { changeLoginStatus } = this.props;
 
     // Call to backend
-    fetch('http://localhost:3000/signin', {
+    fetch('https://obscure-river-59718.herokuapp.com/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
