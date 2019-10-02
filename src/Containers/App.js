@@ -17,8 +17,6 @@ const DailyAverageChart = loadable(() =>
 const Nav = loadable(() => import('../Components/Nav'));
 
 class App extends Component {
-  /* ////////////////////////////////////////////////////////////////////////// */
-
   // Flip login status
   changeLoginStatus = status => {
     const guest = status === 'guest';
@@ -49,10 +47,6 @@ class App extends Component {
         localStorage.setItem('sandbox', false);
       }
 
-      // Remove session data
-      sessionStorage.removeItem('avgdate');
-      sessionStorage.removeItem('date');
-
       // Change path to '/' so when signed in again,
       // will start at daily catches chart
       localStorage.setItem('path', '/');
@@ -60,8 +54,7 @@ class App extends Component {
       // Set signed in to false
       Cookie.set('signedin', false);
     }
-
-    this.forceUpdate(); // Force the app to rerender
+    window.location.reload(true); // Reload page
   };
 
   /* ////////////////////////////////////////////////////////////////////////// */
@@ -70,6 +63,8 @@ class App extends Component {
   changeCurrentPath = path => {
     localStorage.setItem('path', path);
   };
+
+  /* ////////////////////////////////////////////////////////////////////////// */
 
   render() {
     // Set session dates

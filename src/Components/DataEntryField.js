@@ -2,7 +2,29 @@ import React, { Component } from 'react';
 import './Input.css';
 import PropTypes from 'prop-types';
 
+// Get current login state
+const guest = JSON.parse(localStorage.getItem('guest'));
+const sandbox = JSON.parse(localStorage.getItem('sandbox'));
+
 class DataEntryField extends Component {
+  constructor() {
+    super();
+    this.state = {
+      loginState: ''
+    };
+  }
+
+  componentDidMount() {
+    if (guest) {
+      this.setState({ loginState: '(disabled as guest)' });
+    } else if (sandbox) {
+      this.setState({ loginState: '(sandbox)' });
+    }
+    this.forceUpdate();
+  }
+
+  /* ////////////////////////////////////////////////////////////////////////// */
+
   // When data is entered into the input field
   submitData = event => {
     const { updateDailyData } = this.props;
@@ -18,33 +40,22 @@ class DataEntryField extends Component {
   /* ////////////////////////////////////////////////////////////////////////// */
 
   render() {
-    const guest = localStorage.getItem('guest');
-    const sandbox = localStorage.getItem('sandbox');
-
-    // Which button did the user press at the start
-    let state = '';
-    if (guest === 'true') {
-      state = '(disabled as guest)';
-    }
-
-    if (sandbox === 'true') {
-      state = '(sandbox)';
-    }
+    const { loginState } = this.state;
 
     return (
       // Form
       <form onSubmit={this.submitData}>
-        <div className="">
+        <div>
           {/* Input field */}
           <div>
             <input
               className={`f6 mb2 input-reset fl black-80 pa3 lh-solid w-100 w-75-m w-80-l br3 b--black ${
-                guest === 'true' ? 'bg-moon-gray' : 'bg-white'
+                guest ? 'bg-moon-gray' : 'bg-white'
               }`}
               style={{ outline: 'none' }}
               type="number"
-              placeholder={`Number of catches ${state}`}
-              disabled={guest === 'true' ? true : null}
+              placeholder={`Number of catches ${loginState}`}
+              disabled={guest || null}
             />
           </div>
 
@@ -52,12 +63,12 @@ class DataEntryField extends Component {
           <div>
             <input
               className={`f6 button-reset pv3 tc bn bg-green hover-bg-green white w-50 w-25-m w-20-l br3 ${
-                guest === 'true' ? null : 'pointer'
+                guest ? null : 'pointer'
               }`}
               style={{ outline: 'none' }}
               type="submit"
               value="Add"
-              disabled={guest === 'true' ? true : null}
+              disabled={guest || null}
             />
           </div>
         </div>
