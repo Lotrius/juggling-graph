@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c1bfb299386d41221b0f083720f75b10",
+    "revision": "7c7e563cd6b33a3e6e9cbbdacd2a9abb",
     "url": "/juggling-graph/index.html"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/css/3.eb45ad44.chunk.css"
   },
   {
-    "revision": "9d924589ce6770ee18cd",
+    "revision": "69012b91f801dae075a1",
     "url": "/juggling-graph/static/css/4.30d8dda7.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/css/5.4ae85d92.chunk.css"
   },
   {
-    "revision": "35a6fd880f8d38e8045f",
+    "revision": "6c25c91406f530d44bd3",
     "url": "/juggling-graph/static/css/main.7014b198.chunk.css"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/js/3.1703dc20.chunk.js"
   },
   {
-    "revision": "9d924589ce6770ee18cd",
-    "url": "/juggling-graph/static/js/4.427be6c3.chunk.js"
+    "revision": "69012b91f801dae075a1",
+    "url": "/juggling-graph/static/js/4.f29a3dfa.chunk.js"
   },
   {
     "revision": "b9afdc45b78830c2f19f",
@@ -56,11 +56,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/juggling-graph/static/js/9.402f4704.chunk.js"
   },
   {
-    "revision": "35a6fd880f8d38e8045f",
-    "url": "/juggling-graph/static/js/main.922e0411.chunk.js"
+    "revision": "6c25c91406f530d44bd3",
+    "url": "/juggling-graph/static/js/main.efbec82e.chunk.js"
   },
   {
-    "revision": "6fa8427a36cb28a44808",
-    "url": "/juggling-graph/static/js/runtime~main.7958c545.js"
+    "revision": "ff5161b46a84f6b65576",
+    "url": "/juggling-graph/static/js/runtime~main.bdb144c2.js"
   }
 ]);
