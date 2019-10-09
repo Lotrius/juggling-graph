@@ -6,7 +6,7 @@ const Nav = ({ changeLoginStatus }) => {
   return (
     <nav className="row navbar navbar-expand-lg navbar-dark bg-dark">
       <NavLink exact className="ml3 navbar-brand" activeClassName="" to="/">
-        Juggling Hell
+        Jiggling
       </NavLink>
       <button
         className="navbar-toggler"

@@ -38,6 +38,7 @@ class DailyChart extends Component {
 
   /* ////////////////////////////////////////////////////////////////////////// */
 
+  // Returns the styles for the graph
   getStyles = (xPadding, yPadding) => {
     return {
       xAxis: {
@@ -159,8 +160,10 @@ class DailyChart extends Component {
   updateDailyData = catches => {
     const { dailyData } = this.state;
 
+    // If we are in sandbox, just push to state and don't
+    // actually save to DB
     if (localStorage.getItem('sandbox') === 'true') {
-      this.setState((prevState, props) => {
+      this.setState((prevState) => {
         dailyData.push({
           x: prevState.length,
           y: catches
@@ -170,6 +173,7 @@ class DailyChart extends Component {
       return;
     }
 
+    // Add new data to DB
     fetch('https://obscure-river-59718.herokuapp.com/dailyupdate', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -185,7 +189,7 @@ class DailyChart extends Component {
       .then(res => {
         sessionStorage.setItem('date', new Date());
 
-        this.setState((prevState, props) => {
+        this.setState((prevState) => {
           dailyData.push({
             x: prevState.length,
             y: catches
@@ -197,6 +201,7 @@ class DailyChart extends Component {
 
   /* ////////////////////////////////////////////////////////////////////////// */
 
+  // Create the average line
   createAverageLine = (dailyData, chunk) => {
     return this.removeNoise(dailyData, chunk).map((val, ind) => ({
       x: ind * 5,
@@ -206,6 +211,7 @@ class DailyChart extends Component {
 
   /* ////////////////////////////////////////////////////////////////////////// */
 
+  // Calculate current average
   calculateAverage = dailyData => {
     return (
       dailyData.reduce((acc, val) => acc + val.y, 0) /

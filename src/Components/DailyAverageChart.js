@@ -36,6 +36,7 @@ class DailyAverageChart extends Component {
 
   /* ////////////////////////////////////////////////////////////////////////// */
 
+  // Returns the styles for the graph
   getStyles = (xPadding, yPadding) => {
     return {
       xAxis: {
