@@ -163,7 +163,7 @@ class DailyChart extends Component {
     // If we are in sandbox, just push to state and don't
     // actually save to DB
     if (localStorage.getItem('sandbox') === 'true') {
-      this.setState((prevState) => {
+      this.setState(prevState => {
         dailyData.push({
           x: prevState.length,
           y: catches
@@ -189,7 +189,7 @@ class DailyChart extends Component {
       .then(res => {
         sessionStorage.setItem('date', new Date());
 
-        this.setState((prevState) => {
+        this.setState(prevState => {
           dailyData.push({
             x: prevState.length,
             y: catches

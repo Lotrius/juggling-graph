@@ -33,7 +33,7 @@ class App extends Component {
       }
 
       // Signed in cookie true
-      Cookie.set('signedin', true);
+      Cookie.set('signedin', true, { expires: 1 });
     }
 
     // If already signed in and logging out,
@@ -52,7 +52,7 @@ class App extends Component {
       localStorage.setItem('path', '/');
 
       // Set signed in to false
-      Cookie.set('signedin', false);
+      Cookie.set('signedin', false, { expires: 1 });
     }
     window.location.reload(true); // Reload page
   };
