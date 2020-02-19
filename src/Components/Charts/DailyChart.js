@@ -11,8 +11,8 @@ import {
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import DateSelect from './DateSelect';
-import DataEntryField from './DataEntryField';
+import DateSelect from '../DateSelect';
+import DataEntryField from '../DataEntryField';
 import './Chart.css';
 
 class DailyChart extends Component {

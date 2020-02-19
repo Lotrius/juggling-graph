@@ -10,7 +10,7 @@ import {
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import DateSelectAvg from './DateSelectAvg';
+import DateSelectAvg from '../DateSelectAvg';
 import './Chart.css';
 
 class DailyAverageChart extends Component {

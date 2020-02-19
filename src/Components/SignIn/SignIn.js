@@ -47,8 +47,12 @@ class SignIn extends React.Component {
         if (successVal === 'success') {
           changeLoginStatus(guest);
         }
-      });
+      })
+      // eslint-disable-next-line no-console
+      .catch(err => console.log('error signing in'));
   };
+
+  /* ////////////////////////////////////////////////////////////////////////// */
 
   render() {
     const { changeLoginStatus } = this.props;
@@ -94,7 +98,10 @@ class SignIn extends React.Component {
                 {/* Sign in */}
                 <div>
                   <input
-                    onClick={event => this.onSubmitSignIn(event, 'normal')}
+                    id="signin"
+                    onClick={event => {
+                      this.onSubmitSignIn(event, 'normal');
+                    }}
                     className="b ph3 pv2 input-reset ba b--black grow pointer f4 dib br3"
                     style={buttonColor}
                     type="submit"

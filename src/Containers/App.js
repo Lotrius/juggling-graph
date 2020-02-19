@@ -9,10 +9,10 @@ import Cookie from 'js-cookie';
 import loadable from '@loadable/component';
 
 // Code splitting
-const SignIn = loadable(() => import('../Components/SignIn'));
-const DailyChart = loadable(() => import('../Components/DailyChart'));
+const SignIn = loadable(() => import('../Components/SignIn/SignIn'));
+const DailyChart = loadable(() => import('../Components/Charts/DailyChart'));
 const DailyAverageChart = loadable(() =>
-  import('../Components/DailyAverageChart')
+  import('../Components/Charts/DailyAverageChart')
 );
 const Nav = loadable(() => import('../Components/Nav'));
 
