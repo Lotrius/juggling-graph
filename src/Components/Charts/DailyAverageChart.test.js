@@ -74,3 +74,21 @@ describe('Check set function', () => {
     expect(Object.keys(sessionStorage.__STORE__).length).toBe(1);
   });
 });
+
+// Test componentDidMount
+describe('Check componentDidMount', () => {
+  it('Calls only changeCurrentPath', () => {
+    const spy = jest.spyOn(wrapper.instance().props, 'changeCurrentPath');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('Also calls setDate', () => {
+    const VALUE = new Date();
+
+    global.sessionStorage.setItem('avgdate', VALUE);
+
+    const spy = jest.spyOn(wrapper.instance(), 'setDate');
+    wrapper.instance().componentDidMount();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+});
