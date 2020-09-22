@@ -10,7 +10,7 @@ const DateSelect = ({ date, setDate }) => {
       <DatePicker
         className="br3 pl2 blue bg-light-gray"
         selected={date}
-        onChange={newDate => setDate(newDate)}
+        onChange={(newDate) => setDate(newDate)}
       />
     </div>
   );

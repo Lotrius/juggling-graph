@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { shallow } from 'enzyme';
-import renderer from 'react-test-renderer';
 import DailyAverageChart from './DailyAverageChart';
 
 let wrapper;
@@ -21,9 +20,7 @@ beforeEach(() => {
 
 // Test signin
 it('Render DailyAverageChart component', () => {
-  //   const renderer = new ShallowRenderer();
-  const tree = renderer.create(wrapper).toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });
 
 // Test state changers
@@ -33,8 +30,8 @@ describe('Check state', () => {
   });
 });
 
-// Test get function
-describe('Check get function', () => {
+// Test get functions
+describe('Check get functions', () => {
   it('Gives correct output for getStyles', () => {
     const mockReturnValue = {
       xAxis: {
@@ -59,6 +56,23 @@ describe('Check get function', () => {
         .instance()
         .getStyles(mockProps.mockXPadding, mockProps.mockYPadding)
     ).toEqual(mockReturnValue);
+  });
+
+  it('Gives correct output for getAverageData', () => {
+    const mockAverageData = [
+      { x: 5, y: 14.222222222222221 },
+      { x: 11, y: 14.0625 }
+    ];
+    const mockDate = new Date(2019, 10); // November 2019
+
+    expect.assertions(1);
+
+    return wrapper
+      .instance()
+      .getAverageData(mockDate)
+      .then((data) => {
+        expect(data).toEqual(mockAverageData);
+      });
   });
 });
 

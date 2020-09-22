@@ -10,8 +10,8 @@ import {
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import DateSelectAvg from '../DateSelectAvg';
-import './Chart.css';
+import DateSelectAvg from '../../DateSelectAvg/DateSelectAvg';
+import '../Chart.css';
 
 class DailyAverageChart extends Component {
   constructor() {
@@ -21,22 +21,28 @@ class DailyAverageChart extends Component {
     };
   }
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Update storage and get data when app opened
+  /**
+   * Update storage/path and get data when app opened
+   */
   componentDidMount() {
+    // Get props
     const { changeCurrentPath, location } = this.props;
 
+    // Get the current (selected) date and change the graph to that date
     if (sessionStorage.getItem('avgdate')) {
       this.setDate(new Date(sessionStorage.getItem('avgdate')));
     }
 
+    // Update path
     changeCurrentPath(location.pathname);
   }
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Returns the styles for the graph
+  /**
+   * Returns the styles for the graph
+   *
+   * @param {Number} xPadding padding for graphs x axis
+   * @param {Number} yPadding padding for graphs y axis
+   */
   getStyles = (xPadding, yPadding) => {
     return {
       xAxis: {
@@ -57,19 +63,31 @@ class DailyAverageChart extends Component {
     };
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Change date to date selected on calendar
-  setDate = date => {
+  /**
+   * Change date to date selected on calendar
+   *
+   * @param {Date} date current (selected) date
+   */
+  setDate = (date) => {
+    // Set date to current date in session storage
     sessionStorage.setItem('avgdate', date);
 
-    this.getAverageData(new Date(sessionStorage.getItem('avgdate')));
+    // Get the data for that date
+    this.getAverageData(new Date(sessionStorage.getItem('avgdate'))).then(
+      (newState) => {
+        this.setState(() => {
+          return { dailyAverageData: newState };
+        });
+      }
+    );
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Get average data graph
-  getAverageData = date => {
+  /**
+   * Fetch data for average data graph
+   *
+   * @param {Date} date selected date
+   */
+  getAverageData = (date) => {
     // Stringify date
     const year = date.getFullYear().toString();
     let month = (date.getMonth() + 1).toString();
@@ -81,25 +99,26 @@ class DailyAverageChart extends Component {
     const selectedMonth = `${year}-${month}`;
 
     // Call to backend
-    fetch('https://obscure-river-59718.herokuapp.com/averagegraph', {
+    return fetch('https://obscure-river-59718.herokuapp.com/averagegraph', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         selectedMonth
       })
     })
-      .then(response => response.json())
-      .then(avgdata => {
-        this.setState((prevState, props) => {
-          const newState = avgdata.map(dat => ({
-            x: parseInt(dat.to_char.substring(8, 10), 10),
-            y: parseFloat(dat.avg)
-          }));
-          return { dailyAverageData: newState };
-        });
+      .then((response) => response.json())
+      .then((avgdata) => {
+        const newState = avgdata.map((dat) => ({
+          x: parseInt(dat.to_char.substring(8, 10), 10),
+          y: parseFloat(dat.avg)
+        }));
+        return newState;
       });
   };
 
+  /**
+   * Render graph
+   */
   render() {
     const { xPadding, yPadding } = this.props;
     const { dailyAverageData } = this.state;

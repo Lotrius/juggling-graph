@@ -10,15 +10,21 @@ import loadable from '@loadable/component';
 
 // Code splitting
 const SignIn = loadable(() => import('../Components/SignIn/SignIn'));
-const DailyChart = loadable(() => import('../Components/Charts/DailyChart'));
-const DailyAverageChart = loadable(() =>
-  import('../Components/Charts/DailyAverageChart')
+const DailyChart = loadable(() =>
+  import('../Components/Charts/DailyChart/DailyChart')
 );
-const Nav = loadable(() => import('../Components/Nav'));
+const DailyAverageChart = loadable(() =>
+  import('../Components/Charts/DailyAverageChart/DailyAverageChart')
+);
+const Nav = loadable(() => import('../Components/Nav/Nav'));
 
 class App extends Component {
-  // Flip login status
-  changeLoginStatus = status => {
+  /**
+   * Flip login status
+   *
+   * @param {String} status whether the login is as a registered user, guest, or sandbox
+   */
+  changeLoginStatus = (status) => {
     const guest = status === 'guest';
     const sandbox = status === 'sandbox';
 
@@ -57,15 +63,18 @@ class App extends Component {
     window.location.reload(true); // Reload page
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Update current path
-  changeCurrentPath = path => {
+  /**
+   * Update current path
+   *
+   * @param {String} path the current path of the app
+   */
+  changeCurrentPath = (path) => {
     localStorage.setItem('path', path);
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
+  /**
+   * Render app
+   */
   render() {
     // Set session dates
     sessionStorage.setItem('date', new Date());

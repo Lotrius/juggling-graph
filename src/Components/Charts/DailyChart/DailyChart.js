@@ -11,9 +11,9 @@ import {
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import DateSelect from '../DateSelect';
-import DataEntryField from '../DataEntryField';
-import './Chart.css';
+import DateSelect from '../../DateSelect/DateSelect';
+import DataEntryField from '../../DataEntryField/DataEntryField';
+import '../Chart.css';
 
 class DailyChart extends Component {
   constructor() {
@@ -23,22 +23,28 @@ class DailyChart extends Component {
     };
   }
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Update storage and get data when app opened
+  /**
+   * Update storage and get data when app is opened
+   */
   componentDidMount() {
+    // Get props
     const { changeCurrentPath, location } = this.props;
 
+    // Get the current (selected) date and change the graph to that date
     if (sessionStorage.getItem('date')) {
       this.setDate(new Date(sessionStorage.getItem('date')));
     }
 
+    // Update path
     changeCurrentPath(location.pathname);
   }
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Returns the styles for the graph
+  /**
+   * Returns the styles for the graph
+   *
+   * @param {Number} xPadding padding for graphs x axis
+   * @param {Number} yPadding padding for graphs y axis
+   */
   getStyles = (xPadding, yPadding) => {
     return {
       xAxis: {
@@ -59,17 +65,20 @@ class DailyChart extends Component {
     };
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Removes noise from data by taking average every chunk-sized chunks
+  /**
+   * Removes noise from data by taking average every chunk-sized chunks
+   *
+   * @param {Array} data daily juggling data
+   * @param {Number} chunk used to calculate average catches per chunk size
+   */
   removeNoise = (data, chunk) => {
-    const catchPoints = data.slice(1).map(val => val.y); // Isolate catch data
+    const catchPoints = data.slice(1).map((val) => val.y); // Isolate catch data
     const { length } = catchPoints;
     const deletedNoiseArray = [0]; // Start with zero
     let acc = 0;
 
     // Remove noise
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i += 1) {
       // If chunk size is reached, push in average for that chunk
       // and reset the acc to 0
       if (!(i % chunk) && i !== 0) {
@@ -95,54 +104,65 @@ class DailyChart extends Component {
     return deletedNoiseArray;
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Turn date into a string
-  stringifyDate = date => {
+  /**
+   * Turn date into a string
+   *
+   * @param {Date} date selected date
+   */
+  stringifyDate = (date) => {
     // Reformat the date to make it easier to pass into DB/title
     const year = date.getFullYear().toString();
     let month = (date.getMonth() + 1).toString();
     let day = date.getDate().toString();
 
+    // Add zero to front if Jan-Sept
     if (month.length === 1) {
       month = `0${month}`;
     }
 
+    // Add zero to front if day 1-9
     if (day.length === 1) {
       day = `0${day}`;
     }
 
+    // Return full date
     return `${year}-${month}-${day}`;
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Change date to date selected on calendar
-  setDate = date => {
+  /**
+   * Change date to date selected on calendar
+   *
+   * @param {Date} date selected date
+   */
+  setDate = (date) => {
+    // Set date to selected date
     sessionStorage.setItem('date', date);
 
+    // Get data for that date
     this.getDailyData(new Date(sessionStorage.getItem('date')));
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Get graph data for a certain day
-  getDailyData = date => {
+  /**
+   * Get graph data for a certain day
+   *
+   * @param {Date} date selected date
+   */
+  getDailyData = (date) => {
     // Reformat the date to make it easier to pass into DB/title
     const fullDate = this.stringifyDate(date);
 
     // Call to backend to get data
-    fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
+    return fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
       method: 'post', // Can't pass in body if it's a GET
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         newDate: fullDate // Pass in the new date
       })
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // Change the dailyData to reflect the new date
-        this.setState((prevState, props) => {
+        this.setState(() => {
           const newData = [{ x: 0, y: 0 }].concat(
             data.map((num, index) => ({
               x: index + 1,
@@ -154,18 +174,28 @@ class DailyChart extends Component {
       });
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Update DB/graph when data is input
-  updateDailyData = catches => {
+  /**
+   * Update DB/graph when data is input
+   *
+   * @param {Number} catches number of catches
+   */
+  updateDailyData = (catches) => {
     const { dailyData } = this.state;
+
+    // In case user just presses Add without adding a number
+    // Checks for NaN cause apparently other ways of checking are unreliable
+    // Why.
+    // eslint-disable-next-line no-self-compare
+    if (catches !== catches) {
+      return;
+    }
 
     // If we are in sandbox, just push to state and don't
     // actually save to DB
     if (localStorage.getItem('sandbox') === 'true') {
-      this.setState(prevState => {
+      this.setState((prevState) => {
         dailyData.push({
-          x: prevState.length,
+          x: prevState.dailyData.length,
           y: catches
         });
         return { dailyData };
@@ -181,15 +211,15 @@ class DailyChart extends Component {
         catches
       })
     })
-      .then(response => response.json())
-      .then(res => {
+      .then((response) => response.json())
+      .then((res) => {
         this.getDailyData(new Date(sessionStorage.getItem('date')));
         return res;
       })
-      .then(res => {
+      .then(() => {
         sessionStorage.setItem('date', new Date());
 
-        this.setState(prevState => {
+        this.setState((prevState) => {
           dailyData.push({
             x: prevState.length,
             y: catches
@@ -199,9 +229,12 @@ class DailyChart extends Component {
       });
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Create the average line
+  /**
+   * Create the average line
+   *
+   * @param {Array} dailyData array of data for the day
+   * @param {Number} chunk size of chunk used to remove noise
+   */
   createAverageLine = (dailyData, chunk) => {
     return this.removeNoise(dailyData, chunk).map((val, ind) => ({
       x: ind * 5,
@@ -209,18 +242,21 @@ class DailyChart extends Component {
     }));
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Calculate current average
-  calculateAverage = dailyData => {
+  /**
+   * Calculate average catches for entire day
+   *
+   * @param {Array} dailyData array of data for the day
+   */
+  calculateAverage = (dailyData) => {
     return (
       dailyData.reduce((acc, val) => acc + val.y, 0) /
       (dailyData.length - 1)
     ).toFixed(2);
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
+  /**
+   * Render graph
+   */
   render() {
     const { xPadding, yPadding } = this.props; // Padding for charts
     const { dailyData } = this.state;

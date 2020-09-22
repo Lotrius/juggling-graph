@@ -14,19 +14,28 @@ class DataEntryField extends Component {
     };
   }
 
+  /**
+   * Update login state once components mount
+   */
   componentDidMount() {
+    // Set login state based on how user logged in
     if (guest) {
+      console.log('sup');
       this.setState({ loginState: '(disabled as guest)' });
     } else if (sandbox) {
       this.setState({ loginState: '(sandbox)' });
     }
+
+    // UPDATEEE
     this.forceUpdate();
   }
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // When data is entered into the input field
-  submitData = event => {
+  /**
+   * When add button is pressed, submit data
+   *
+   * @param {Object} event
+   */
+  submitData = (event) => {
     const { updateDailyData } = this.props;
 
     event.preventDefault(); // Prevent page from refreshing when submitted
@@ -37,8 +46,9 @@ class DataEntryField extends Component {
     updateDailyData(num);
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
+  /**
+   * Render entry field
+   */
   render() {
     const { loginState } = this.state;
 

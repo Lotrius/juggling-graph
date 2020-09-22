@@ -13,14 +13,14 @@ class SignIn extends React.Component {
   /* ////////////////////////////////////////////////////////////////////////// */
 
   // Get email
-  onEmailChange = event => {
+  onEmailChange = (event) => {
     this.setState({ signInEmail: event.target.value });
   };
 
   /* ////////////////////////////////////////////////////////////////////////// */
 
   // Get PW
-  onPasswordChange = event => {
+  onPasswordChange = (event) => {
     this.setState({ signInPassword: event.target.value });
   };
 
@@ -42,14 +42,14 @@ class SignIn extends React.Component {
         password: signInPassword
       })
     })
-      .then(response => response.json())
-      .then(successVal => {
+      .then((response) => response.json())
+      .then((successVal) => {
         if (successVal === 'success') {
           changeLoginStatus(guest);
         }
       })
       // eslint-disable-next-line no-console
-      .catch(err => console.log('error signing in'));
+      .catch(() => console.log('error signing in'));
   };
 
   /* ////////////////////////////////////////////////////////////////////////// */
@@ -65,10 +65,12 @@ class SignIn extends React.Component {
           <div className="measure">
             <form>
               <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                <legend className="f1 fw6 ph0 mh0">Sign In</legend>
+                <legend key={1} className="f1 fw6 ph0 mh0">
+                  Sign In
+                </legend>
 
                 {/* Email */}
-                <div className="mt3">
+                <div key={2} className="mt3">
                   <label className="db fw6 lh-copy f6" htmlFor="email-address">
                     Email
                     <input
@@ -82,7 +84,7 @@ class SignIn extends React.Component {
                 </div>
 
                 {/* PW */}
-                <div className="mv3">
+                <div key={3} className="mv3">
                   <label className="db fw6 lh-copy f6" htmlFor="password">
                     Password
                     <input
@@ -96,10 +98,10 @@ class SignIn extends React.Component {
                 </div>
 
                 {/* Sign in */}
-                <div>
+                <div key={4}>
                   <input
                     id="signin"
-                    onClick={event => {
+                    onClick={(event) => {
                       this.onSubmitSignIn(event, 'normal');
                     }}
                     className="b ph3 pv2 input-reset ba b--black grow pointer f4 dib br3"

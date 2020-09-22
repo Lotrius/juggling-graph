@@ -10,7 +10,7 @@ const DateSelectAvg = ({ averageDate, setDate }) => {
       <DatePicker
         className="br3 pl2 blue bg-light-gray"
         selected={averageDate}
-        onChange={date => setDate(date)}
+        onChange={(date) => setDate(date)}
         dateFormat="MM/yyyy"
         showMonthYearPicker
       />

@@ -12,9 +12,7 @@ beforeEach(() => {
 
 // Test signin
 it('Render SignIn component', () => {
-  //   const renderer = new ShallowRenderer();
-  const tree = renderer.create(wrapper).toJSON();
-  expect(tree).toMatchSnapshot();
+  expect(wrapper).toMatchSnapshot();
 });
 
 // Test state changers
