@@ -171,7 +171,7 @@ class DailyChart extends Component {
     const fullDate = this.stringifyDate(date);
 
     // Call to backend to get data
-    return fetch('http://localhost:3000/dailygraph', {
+    return fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
       method: 'post', // Can't pass in body if it's a GET
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
