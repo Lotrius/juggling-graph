@@ -10,6 +10,8 @@ import {
 } from 'victory';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 import DateSelect from '../../DateSelect/DateSelect';
 import DataEntryField from '../../DataEntryField/DataEntryField';
@@ -19,7 +21,7 @@ class DailyChart extends Component {
   constructor() {
     super();
     this.state = {
-      dailyData: []
+      dailyData: [{ x: 0, y: 0 }]
     };
   }
 
@@ -38,6 +40,23 @@ class DailyChart extends Component {
     // Update path
     changeCurrentPath(location.pathname);
   }
+
+  deletePopup = () => {
+    confirmAlert({
+      title: 'Delete last data point',
+      message: 'Are you you want to delete the last point?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => this.removeLastDataPoint()
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ]
+    });
+  };
 
   /**
    * Returns the styles for the graph
@@ -152,7 +171,7 @@ class DailyChart extends Component {
     const fullDate = this.stringifyDate(date);
 
     // Call to backend to get data
-    return fetch('https://obscure-river-59718.herokuapp.com/dailygraph', {
+    return fetch('http://localhost:3000/dailygraph', {
       method: 'post', // Can't pass in body if it's a GET
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -252,6 +271,40 @@ class DailyChart extends Component {
       dailyData.reduce((acc, val) => acc + val.y, 0) /
       (dailyData.length - 1)
     ).toFixed(2);
+  };
+
+  /**
+   * Remove the last data point entered by user
+   */
+  removeLastDataPoint = () => {
+    const { dailyData } = this.state;
+
+    // If there's no data just return
+    if (dailyData.length === 1) {
+      return;
+    }
+
+    // If we are in sandbox, just pop and don't
+    // actually save to db
+    if (localStorage.getItem('sandbox') === 'true') {
+      this.setState(() => {
+        dailyData.pop();
+        return { dailyData };
+      });
+    }
+
+    // Delete from db
+    fetch('https://obscure-river-59718.herokuapp.com/delete', {
+      method: 'delete',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then(() => {
+        this.setState(() => {
+          dailyData.pop();
+          return { dailyData };
+        });
+      });
   };
 
   /**
@@ -362,7 +415,10 @@ class DailyChart extends Component {
             <div className="center">
               {/* Enter number field */}
               <div className="overflow-auto">
-                <DataEntryField updateDailyData={this.updateDailyData} />
+                <DataEntryField
+                  updateDailyData={this.updateDailyData}
+                  deletePopup={this.deletePopup}
+                />
               </div>
 
               <div className="mt4">

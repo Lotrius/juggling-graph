@@ -20,7 +20,6 @@ class DataEntryField extends Component {
   componentDidMount() {
     // Set login state based on how user logged in
     if (guest) {
-      console.log('sup');
       this.setState({ loginState: '(disabled as guest)' });
     } else if (sandbox) {
       this.setState({ loginState: '(sandbox)' });
@@ -46,6 +45,14 @@ class DataEntryField extends Component {
     updateDailyData(num);
   };
 
+  undoData = (event) => {
+    const { deletePopup } = this.props;
+
+    event.preventDefault(); // Prevent page from refreshing when submitted
+
+    deletePopup();
+  };
+
   /**
    * Render entry field
    */
@@ -54,45 +61,68 @@ class DataEntryField extends Component {
 
     return (
       // Form
-      <form onSubmit={this.submitData}>
-        <div>
-          {/* Input field */}
+      <div>
+        <form onSubmit={this.submitData}>
           <div>
-            <input
-              className={`f6 mb2 input-reset fl black-80 pa3 lh-solid w-100 w-75-m w-80-l br3 b--black ${
-                guest ? 'bg-moon-gray' : 'bg-white'
-              }`}
-              style={{ outline: 'none' }}
-              type="number"
-              placeholder={`Number of catches ${loginState}`}
-              disabled={guest || null}
-            />
-          </div>
+            {/* Input field */}
+            <div>
+              <input
+                className={`f6 mb2 input-reset fl black-80 pa3 lh-solid w-100 w-75-m w-80-l br3 b--black ${
+                  guest ? 'bg-moon-gray' : 'bg-white'
+                }`}
+                style={{ outline: 'none' }}
+                type="number"
+                placeholder={`Number of catches ${loginState}`}
+                disabled={guest || null}
+              />
+            </div>
 
-          {/* Submit button */}
-          <div>
+            {/* Submit button */}
+            <div>
+              <input
+                className={`f6 button-reset pv3 tc bn bg-green hover-bg-dark-green white w-50 w-25-m w-20-l br3 ${
+                  guest ? null : 'pointer'
+                }`}
+                style={{ outline: 'none' }}
+                type="submit"
+                value="Add"
+                disabled={guest || null}
+              />
+            </div>
+          </div>
+        </form>
+
+        {/* Undo button */}
+        <form onSubmit={this.undoData}>
+          <div className="mt3">
             <input
-              className={`f6 button-reset pv3 tc bn bg-green hover-bg-green white w-50 w-25-m w-20-l br3 ${
+              className={`f6 button-reset pv3 tc bn bg-red hover-bg-dark-red white w-50 w-25-m w-20-l br3 ${
                 guest ? null : 'pointer'
               }`}
+              // Prevent pressing by enter button just in case
+              onKeyPress={(event) => {
+                event.preventDefault();
+              }}
               style={{ outline: 'none' }}
               type="submit"
-              value="Add"
+              value="Undo"
               disabled={guest || null}
             />
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     );
   }
 }
 
 DataEntryField.propTypes = {
-  updateDailyData: PropTypes.func
+  updateDailyData: PropTypes.func,
+  deletePopup: PropTypes.func
 };
 
 DataEntryField.defaultProps = {
-  updateDailyData: null
+  updateDailyData: null,
+  deletePopup: PropTypes.func
 };
 
 export default DataEntryField;
