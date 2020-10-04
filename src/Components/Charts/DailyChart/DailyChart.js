@@ -47,20 +47,43 @@ class DailyChart extends Component {
    * in the selected date
    */
   deletePopup = () => {
-    confirmAlert({
-      title: 'Delete last data point',
-      message: 'Are you you want to delete the last point?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => this.removeLastDataPoint()
-        },
-        {
-          label: 'No',
-          onClick: () => {}
-        }
-      ]
-    });
+    const { dailyData } = this.state;
+
+    // If there's no data,
+    // bruh why you here
+    if (dailyData.length === 1) {
+      confirmAlert({
+        title: '??????????????',
+        // eslint-disable-next-line quotes
+        message: "there's nothing to delete why are you here",
+        buttons: [
+          {
+            label: 'im sorry',
+            onClick: () => {}
+          },
+          {
+            label: 'bye',
+            onClick: () => {}
+          }
+        ]
+      });
+    } else {
+      // Else remove
+      confirmAlert({
+        title: 'Delete last data point',
+        message: 'Are you you want to delete the last point?',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => this.removeLastDataPoint()
+          },
+          {
+            label: 'No',
+            onClick: () => {}
+          }
+        ]
+      });
+    }
   };
 
   /**
@@ -296,6 +319,7 @@ class DailyChart extends Component {
         dailyData.pop();
         return { dailyData };
       });
+      return;
     }
 
     // Delete from db
