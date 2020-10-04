@@ -41,6 +41,11 @@ class DailyChart extends Component {
     changeCurrentPath(location.pathname);
   }
 
+  /**
+   * Popup which asks user to confirm whether
+   * they want to undo the last data point
+   * in the selected date
+   */
   deletePopup = () => {
     confirmAlert({
       title: 'Delete last data point',

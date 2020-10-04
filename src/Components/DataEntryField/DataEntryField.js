@@ -32,7 +32,7 @@ class DataEntryField extends Component {
   /**
    * When add button is pressed, submit data
    *
-   * @param {Object} event
+   * @param {Object} event event
    */
   submitData = (event) => {
     const { updateDailyData } = this.props;
@@ -45,6 +45,12 @@ class DataEntryField extends Component {
     updateDailyData(num);
   };
 
+  /**
+   * Called when undo button pressed
+   * Calls deletePopup
+   *
+   * @param {Object} event
+   */
   undoData = (event) => {
     const { deletePopup } = this.props;
 

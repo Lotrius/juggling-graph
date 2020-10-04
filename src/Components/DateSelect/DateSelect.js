@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+/**
+ * Date picker for daily data
+ */
 const DateSelect = ({ date, setDate }) => {
   return (
     <div>

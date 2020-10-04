@@ -2,6 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+/**
+ * Navbar
+ */
 const Nav = ({ changeLoginStatus }) => {
   return (
     <nav className="row navbar navbar-expand-lg navbar-dark bg-dark">

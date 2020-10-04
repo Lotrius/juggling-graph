@@ -10,24 +10,31 @@ class SignIn extends React.Component {
     };
   }
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Get email
+  /**
+   * Get email
+   *
+   * @param {Object} event event
+   */
   onEmailChange = (event) => {
     this.setState({ signInEmail: event.target.value });
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Get PW
+  /**
+   * Get PW
+   *
+   * @param {Object} event event
+   */
   onPasswordChange = (event) => {
     this.setState({ signInPassword: event.target.value });
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
-  // Sign in button submitted
-  onSubmitSignIn = (event, guest) => {
+  /**
+   * Sign in button pressed
+   *
+   * @param {Object} event event
+   * @param {String} loginStatus how the user signed in (normal, guest, sandbox)
+   */
+  onSubmitSignIn = (event, loginStatus) => {
     event.preventDefault(); // Stop page refresh when enter is pressed
 
     const { signInEmail, signInPassword } = this.state;
@@ -45,15 +52,16 @@ class SignIn extends React.Component {
       .then((response) => response.json())
       .then((successVal) => {
         if (successVal === 'success') {
-          changeLoginStatus(guest);
+          changeLoginStatus(loginStatus);
         }
       })
       // eslint-disable-next-line no-console
       .catch(() => console.log('error signing in'));
   };
 
-  /* ////////////////////////////////////////////////////////////////////////// */
-
+  /**
+   * Render sign in page
+   */
   render() {
     const { changeLoginStatus } = this.props;
 
