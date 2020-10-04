@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/juggling-graph/precache-manifest.7e75a223b4a4e6187d33cf2c6c702a05.js"
+  "/juggling-graph/precache-manifest.6e29e1786560f57343a340ad27fda015.js"
 );
 
 self.addEventListener('message', (event) => {
